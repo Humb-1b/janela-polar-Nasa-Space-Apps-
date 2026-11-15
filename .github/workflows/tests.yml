@@ -12,3 +12,14 @@ jobs:
       - run: pip install -r backend/requirements.txt pytest numpy tifffile pyproj
       - run: cd backend && python -m pytest -q
       - run: node --test frontend/tests/*.test.mjs
+  horizons-live:
+    # Real request to JPL Horizons with the same link the app shows (format=text).
+    # Does not block the test job if JPL is down.
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r backend/requirements.txt
+      - run: python scripts/check_horizons_link.py

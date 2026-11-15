@@ -1,6 +1,6 @@
 # Janela Polar — NASA Space Apps Challenge 2026
 
-Work in progress (stage 5 of 8). Full README with sources and the "AI assistance" section comes in stage 8.
+Work in progress (stage 6 of 8). Full README with sources and the "AI assistance" section comes in stage 8.
 
 Run tests:
 ```
@@ -70,3 +70,12 @@ zone at entry (Apollo daylight-recovery rule). Launch sites: Earth-rotation boos
 inclination = latitude, Moon elevation and next moonrise. The button "See this site and date in Janela Polar"
 opens `index.html?site=<id>&start=<arrival date>&days=30&lang=<en|pt>`. Simplifications (no lunar gravity, ecliptic
 plane only) are stated on the page.
+
+## NASA Data page (stage 6)
+
+`frontend/dados-nasa.html`: one card per resource (JPL Horizons, LOLA DEMs PGDA 90/78, PGDA 69 illumination,
+USGS Artemis III grids, LROC QuickMap, Moon Trek, NSSDC) saying what it is and how the app uses it; per-site links;
+CSA section (Canadarm3, lunar utility vehicle, LEAP, Jeremy Hansen on Artemis II); external-link notice in EN/PT.
+Horizons links use exactly the backend parameters with `format=text` (JS/Python parity test); CI job
+`horizons-live` fetches one such link from JPL on every push. QuickMap/Moon Trek: the URL format for centring on a
+coordinate could not be confirmed in a browser during the event, so the buttons open the tool and copy the coordinate.

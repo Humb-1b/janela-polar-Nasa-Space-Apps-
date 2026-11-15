@@ -303,9 +303,25 @@
     return [az, el, ds];
   }
 
+  /** Official JPL Horizons OBSERVER table URL - same parameters as backend/app/horizons.py
+   *  observer_params (validated by scripts/horizons_probe.py). body: '10' Sun, '399' Earth, '301' Moon;
+   *  center: '301' (site on the Moon) or '399' (site on Earth). */
+  function horizonsURL(command, center, lat, lonEast, startMs, stopMs, step = "60 m", fmt = "text") {
+    const q = (v) => `'${v}'`, p2 = (n) => String(n).padStart(2, "0");
+    const tf = (ms) => { const d = new Date(ms); return `${d.getUTCFullYear()}-${p2(d.getUTCMonth() + 1)}-${p2(d.getUTCDate())} ${p2(d.getUTCHours())}:${p2(d.getUTCMinutes())}`; };
+    const lon360 = ((lonEast % 360) + 360) % 360;
+    const params = new URLSearchParams({
+      format: fmt, COMMAND: q(command), OBJ_DATA: q("NO"), MAKE_EPHEM: q("YES"), EPHEM_TYPE: q("OBSERVER"),
+      CENTER: q(`coord@${center}`), COORD_TYPE: q("GEODETIC"), SITE_COORD: q(`${lon360.toFixed(6)},${lat.toFixed(6)},${(0).toFixed(4)}`),
+      START_TIME: q(tf(startMs)), STOP_TIME: q(tf(stopMs)), STEP_SIZE: q(step), QUANTITIES: q("4"), ANG_FORMAT: q("DEG"),
+      APPARENT: q("AIRLESS"), CSV_FORMAT: q("YES"), TIME_DIGITS: q("MINUTES"), EXTRA_PREC: q("YES"),
+    });
+    return "https://ssd.jpl.nasa.gov/api/horizons.api?" + params.toString();
+  }
+
   return { DELTA_T_S, MOON_RADIUS_KM, I_MOON, julianDay, jdTT, centuries, moonFundamental,
            moonGeocentric, sunGeocentric, selenographicSubpoint, moonState, sunEarthAltazOnMoon,
            gmstDeg, meanObliquity, moonAltazFromEarth, norm180, norm360,
            altazFromState, DSN_SITES, analyticBundle, SUN_RADIUS_DEG, depressionDeg, maskAt, effectiveHorizon,
-           discFraction, evaluate, intervals, summarize, sphericalElevation, sunAltazFromEarth };
+           discFraction, evaluate, intervals, summarize, sphericalElevation, sunAltazFromEarth, horizonsURL };
 });

@@ -40,7 +40,8 @@
       now: "now", none_in_period: "none in period", beyond: "beyond period",
       h_dsn: "DSN antennas seeing the Moon", h_return: "Return windows (≥ {h} h ideal, depart before sunset)", no_dsn: "none (Moon below {e}° at all complexes)",
       no_return: "No ideal stretch of {h} h in this period.", ret_line: "{a} → latest start {b} · sunset {c}",
-      pin: "Pin site + date", copy: "Copy coordinates", copied: "Copied", pending_msg: "Official region geometry from USGS (McClernan 2024) not loaded yet; no calculations until verified coordinates are added.",
+      pin: "Pin site + date", copy: "Copy coordinates", hz_link: "JPL Horizons table (Sun, this period)", qm_btn: "Open in QuickMap", mt_btn: "Open in Moon Trek",
+      ext_note: "QuickMap/Moon Trek open on their home page with the coordinate copied (paste it in their search); a link that centres them on the site was not verified. External sites: NASA is not responsible for how third-party sites use information you provide.", copied: "Copied", pending_msg: "Official region geometry from USGS (McClernan 2024) not loaded yet; no calculations until verified coordinates are added.",
       pl_ideal: "Sunlit and in direct radio contact with Earth.", pl_sun_only: "Sunlit, but no direct link to Earth: {why}.", pl_dte_only: "In darkness, but Earth is in view: radio contact is possible.",
       pl_dark: "In darkness and out of direct contact with Earth.", why_earth_down: "Earth is below the horizon", why_no_dsn: "no DSN antenna on Earth can see the Moon now",
       shadow: "The Sun is {el}° up: a 1.8 m astronaut casts a {L} shadow.", shadow_none: "The Sun is hidden ({el}° vs. horizon {hz}°).",
@@ -93,7 +94,8 @@
       now: "agora", none_in_period: "nenhuma no período", beyond: "além do período",
       h_dsn: "Antenas DSN vendo a Lua", h_return: "Janelas de volta (≥ {h} h ideais, partir antes do pôr do Sol)", no_dsn: "nenhuma (Lua abaixo de {e}° em todos os complexos)",
       no_return: "Nenhum trecho ideal de {h} h neste período.", ret_line: "{a} → início até {b} · pôr do Sol {c}",
-      pin: "Fixar local + data", copy: "Copiar coordenadas", copied: "Copiado", pending_msg: "A geometria oficial da região (USGS, McClernan 2024) ainda não foi carregada; sem cálculos até termos coordenadas verificadas.",
+      pin: "Fixar local + data", copy: "Copiar coordenadas", hz_link: "Tabela JPL Horizons (Sol, este período)", qm_btn: "Abrir no QuickMap", mt_btn: "Abrir no Moon Trek",
+      ext_note: "QuickMap/Moon Trek abrem na página inicial com a coordenada copiada (cole na busca deles); não verificamos um link que os centralize no local. Sites externos: a NASA não é responsável pelo uso que sites de terceiros fazem das informações que você fornece.", copied: "Copiado", pending_msg: "A geometria oficial da região (USGS, McClernan 2024) ainda não foi carregada; sem cálculos até termos coordenadas verificadas.",
       pl_ideal: "Iluminado e em contato direto por rádio com a Terra.", pl_sun_only: "Iluminado, mas sem ligação direta com a Terra: {why}.", pl_dte_only: "No escuro, mas a Terra está à vista: contato por rádio é possível.",
       pl_dark: "No escuro e sem contato direto com a Terra.", why_earth_down: "a Terra está abaixo do horizonte", why_no_dsn: "nenhuma antena da DSN na Terra vê a Lua agora",
       shadow: "O Sol está a {el}°: um astronauta de 1,8 m projeta uma sombra de {L}.", shadow_none: "O Sol está escondido ({el}° contra horizonte de {hz}°).",
@@ -459,8 +461,17 @@
     const rw = e.summ.return_windows;
     html += `<h3>${t("h_return", { h: S.returnHours })}</h3>` + (rw.length ? `<ul class="list mono">${rw.slice(0, 5).map((r) =>
       `<li>${t("ret_line", { a: fmtT(r.start, false), b: fmtT(r.latest_start, false), c: r.sunset >= D.times[D.times.length - 1] ? t("beyond") : fmtT(r.sunset, false) })}</li>`).join("")}</ul>` : `<p class="small">${t("no_return", { h: S.returnHours })}</p>`);
-    html += `<div class="row-btns"><button class="btn" type="button" id="pinBtn">${t("pin")}</button><button class="btn ghost" type="button" id="copyBtn">${t("copy")}</button></div>`;
+    const hzUrl = E.horizonsURL("10", "301", s.lat, s.lon, D.times[0], D.times[D.times.length - 1]);
+    html += `<div class="row-btns"><button class="btn" type="button" id="pinBtn">${t("pin")}</button><button class="btn ghost" type="button" id="copyBtn">${t("copy")}</button></div>
+      <div class="row-btns small"><a href="${hzUrl}" target="_blank" rel="noopener noreferrer">${t("hz_link")} ↗</a>
+      <button class="btn ghost" type="button" data-go="https://quickmap.lroc.asu.edu/">${t("qm_btn")}</button>
+      <button class="btn ghost" type="button" data-go="https://trek.nasa.gov/moon/">${t("mt_btn")}</button></div>
+      <p class="note">${t("ext_note")}</p>`;
     el.innerHTML = html;
+    el.querySelectorAll("[data-go]").forEach((b) => (b.onclick = async () => {
+      try { await navigator.clipboard.writeText(`${s.lat}, ${s.lon}`); } catch { /* clipboard blocked */ }
+      window.open(b.dataset.go, "_blank", "noopener");
+    }));
     $("#pinBtn").onclick = () => { S.pins.push({ id: s.id, t0: Math.floor(now / DAY) * DAY, m: S.missionDays }); store.set("pins", S.pins); renderPinned(); };
     $("#copyBtn").onclick = async () => { try { await navigator.clipboard.writeText(`${s.lat}, ${s.lon}`); $("#copyBtn").textContent = t("copied"); } catch { /* no clipboard */ } };
   }

@@ -32,7 +32,11 @@ def build():
         for lat, lon in DSN:
             c["dsn"].append({"lat": lat, "lon": lon, "azel": list(A.moon_altaz_from_earth(t, lat, lon))})
         cases.append(c)
-    return {"generator": "scripts/make_js_reference.py", "cases": cases, "windows": build_windows()}
+    from app import horizons
+    hz = horizons.observer_params("10", "301", -85.9872, -0.23676, datetime(2026, 11, 15), datetime(2026, 12, 15), "60 m", fmt="text")
+    link = {"lat": -85.9872, "lon": -0.23676, "start_ms": int(datetime(2026, 11, 15, tzinfo=timezone.utc).timestamp() * 1000),
+            "stop_ms": int(datetime(2026, 12, 15, tzinfo=timezone.utc).timestamp() * 1000), "url": horizons.text_url(hz)}
+    return {"generator": "scripts/make_js_reference.py", "cases": cases, "windows": build_windows(), "horizons_link": link}
 
 
 def build_windows():

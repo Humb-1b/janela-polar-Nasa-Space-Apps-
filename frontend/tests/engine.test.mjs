@@ -67,3 +67,12 @@ test("analyticBundle == sunEarthAltazOnMoon", () => {
   assert.equal(b.sites[0].series.sun_el[5], r.sun[1]);
   assert.equal(b.times.length, 24);
 });
+
+test("Horizons link: same parameters as backend/app/horizons.py", () => {
+  const h = ref.horizons_link;
+  const js = new URL(E.horizonsURL("10", "301", h.lat, h.lon, h.start_ms, h.stop_ms));
+  const py = new URL(h.url);
+  assert.equal(js.origin + js.pathname, py.origin + py.pathname);
+  assert.deepEqual(Object.fromEntries(js.searchParams), Object.fromEntries(py.searchParams));
+  assert.equal(js.searchParams.get("format"), "text");
+});
