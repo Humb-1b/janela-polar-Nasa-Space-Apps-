@@ -65,3 +65,35 @@ test("Launch sites: rotation boost and minimum inclination", () => {
   assert.ok(r && r > T0 && r < T0 + 2 * DAY);
   assert.ok(Math.abs(E.moonAltazFromEarth(r, ksc.lat, ksc.lon)[1]) < 0.3);
 });
+
+test("Kepler solver converges for highly eccentric orbits (regression)", () => {
+  for (const e of [0, 0.1, 0.5, 0.9, 0.967, 0.98, 0.99, 0.999]) {
+    for (let k = 0; k <= 400; k++) {
+      const M = (2 * Math.PI * k) / 400 + (k % 7) * 1e-3;
+      const E2 = O.solveKepler(M, e);
+      assert.ok(Math.abs(E2 - e * Math.sin(E2) - M) < 1e-12, `e=${e} M=${M}`);
+    }
+  }
+});
+
+test("Trajectories are continuous and never pass the Moon's distance (all kinds, many dates)", () => {
+  for (let d = 0; d < 30; d += 3) {
+    for (const kind of ["hohmann", "fast"]) {
+      const o = O.outbound(T0 + d * DAY, kind), b = O.inbound(o.tA + 6.5 * DAY, kind);
+      for (const [leg, isOut, t0, t1, rMax] of [[o, true, o.tL, o.tA, o.moonAtArrival.r], [b, false, b.tD, b.tE, b.moonAtDeparture.r]]) {
+        let prev = null, prevR = isOut ? 0 : Infinity;
+        for (let i = 0; i <= 400; i++) {
+          const p = O.legPosition(leg, t0 + ((t1 - t0) * i) / 400, isOut);
+          assert.ok(p.r <= rMax + 0.01, `${kind} r beyond the Moon`);   // 10 m: arrival-time iteration residual
+          assert.ok(isOut ? p.r >= prevR - 1e-6 : p.r <= prevR + 1e-6, `${kind} r not monotonic`);
+          if (prev) {
+            const a = p.theta * Math.PI / 180, c = prev.theta * Math.PI / 180;
+            const jump = Math.hypot(p.r * Math.cos(a) - prev.r * Math.cos(c), p.r * Math.sin(a) - prev.r * Math.sin(c));
+            assert.ok(jump < 25000, `${kind} jump ${jump} km`);   // 400 samples over 3-5 d at <= 11 km/s
+          }
+          prev = p; prevR = p.r;
+        }
+      }
+    }
+  }
+});

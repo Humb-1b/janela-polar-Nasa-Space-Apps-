@@ -22,7 +22,8 @@
       map_title: "Map", map_polar: "South polar", map_global: "Whole Moon", map_earthline: "Earth on horizon",
       map_note: "Map shading: analytic model on a smooth sphere (no terrain). Site colours use the active data source and LOLA terrain when available.",
       st_ideal: "Ideal", st_sun_only: "Sun only", st_dte_only: "DTE only", st_dark: "Dark", st_pending: "Coordinates pending",
-      hz_title: "Local horizon", hz_sub: "Sun & Earth paths over the period", tl_title: "Timeline", csv: "Download CSV",
+      hz_title: "Local horizon", hz_sub: "Sun & Earth paths over the period",
+      hz_legend: "Grey: LOLA terrain horizon · dashed: effective horizon = terrain + margin − dip for the point height · amber/blue lines: Sun/Earth over the whole period · discs at true angular size.", tl_title: "Timeline", csv: "Download CSV",
       hm_title: "Best landing date", hm_mission: "Mission length",
       hm_note: "Colour = share of the mission with Sun and DTE together, if landing on that day (00:00 UTC). Click a cell to open that site and date.",
       cmp_title: "Compare sites", pt_title: "Add your own coordinate", pt_add: "Add", pin_title: "Pinned scenarios", pin_sub: "site + date, best value of each column highlighted",
@@ -76,7 +77,8 @@
       map_title: "Mapa", map_polar: "Polo sul", map_global: "Lua inteira", map_earthline: "Terra no horizonte",
       map_note: "Sombreamento do mapa: modelo analítico numa esfera lisa (sem relevo). As cores dos locais usam a fonte de dados ativa e o relevo LOLA quando disponível.",
       st_ideal: "Ideal", st_sun_only: "Só Sol", st_dte_only: "Só DTE", st_dark: "Escuro", st_pending: "Coordenadas pendentes",
-      hz_title: "Horizonte local", hz_sub: "Trajetórias do Sol e da Terra no período", tl_title: "Linha do tempo", csv: "Baixar CSV",
+      hz_title: "Horizonte local", hz_sub: "Trajetórias do Sol e da Terra no período",
+      hz_legend: "Cinza: horizonte do relevo LOLA · tracejado: horizonte efetivo = relevo + margem − queda pela altura do ponto · linhas âmbar/azul: Sol/Terra no período todo · discos no tamanho angular real.", tl_title: "Linha do tempo", csv: "Baixar CSV",
       hm_title: "Melhor data de pouso", hm_mission: "Duração da missão",
       hm_note: "Cor = fração da missão com Sol e DTE ao mesmo tempo, pousando naquele dia (00:00 UTC). Clique numa célula para abrir o local e a data.",
       cmp_title: "Comparar locais", pt_title: "Adicione sua coordenada", pt_add: "Adicionar", pin_title: "Cenários fixados", pin_sub: "local + data, melhor valor de cada coluna destacado",
@@ -488,7 +490,8 @@
     if (!ready(s)) return;
     const ser = D.series[s.id], ev = EV[s.id].ev, mask = D.masks[s.id] || null;
     const maxE = Math.max(4, ...ser.sun_el, ...ser.earth_el.filter((x) => x > -5)) + 1;
-    const yMax = Math.min(92, Math.ceil(maxE)), yMin = -3;
+    const minE = Math.min(...ser.sun_el, ...ser.earth_el);
+    const yMax = Math.min(92, Math.ceil(maxE)), yMin = Math.max(-12, Math.min(-3, Math.floor(minE - 0.5)));
     const L = 34, R = 8, T = 10, B = 22, pw = w - L - R, ph = h - T - B;
     const X = (az) => L + (az / 360) * pw, Y = (el) => T + (1 - (el - yMin) / (yMax - yMin)) * ph;
     ctx.strokeStyle = css("--grid"); ctx.fillStyle = css("--muted"); ctx.lineWidth = 1;
@@ -496,6 +499,8 @@
     for (let e = Math.ceil(yMin / yStep) * yStep; e <= yMax; e += yStep) { ctx.beginPath(); ctx.moveTo(L, Y(e)); ctx.lineTo(w - R, Y(e)); ctx.stroke(); ctx.fillText(`${e}°`, 2, Y(e) + 4); }
     const dirs = w < 420 ? [[0, "N"], [90, "E"], [180, "S"], [270, "W"], [360, "N"]] : [[0, "N"], [45, "NE"], [90, "E"], [135, "SE"], [180, "S"], [225, "SW"], [270, "W"], [315, "NW"], [360, "N"]];
     for (const [az, n] of dirs) { ctx.beginPath(); ctx.moveTo(X(az), T); ctx.lineTo(X(az), T + ph); ctx.stroke(); const tw = ctx.measureText(n).width; ctx.fillText(n, Math.min(w - tw - 1, Math.max(L, X(az) - tw / 2)), h - 6); }
+    // everything below is clipped to the plot area
+    ctx.save(); ctx.beginPath(); ctx.rect(L, T, pw, ph); ctx.clip();
     // terrain (LOLA mask) filled; effective horizon dashed
     ctx.beginPath(); ctx.moveTo(X(0), Y(yMin));
     for (let a = 0; a <= 360; a += 1) ctx.lineTo(X(a), Y(Math.max(yMin, E.maskAt(mask, a))));
@@ -503,7 +508,7 @@
     ctx.setLineDash([4, 3]); ctx.strokeStyle = css("--ink"); ctx.beginPath();
     for (let a = 0; a <= 360; a += 1) { const y = Y(E.effectiveHorizon(a, mask, S.margin, S.height)); a ? ctx.lineTo(X(a), y) : ctx.moveTo(X(a), y); }
     ctx.stroke(); ctx.setLineDash([]);
-    if (!mask) label(ctx, S.lang === "pt" ? "sem máscara LOLA: horizonte da esfera" : "no LOLA mask: spherical horizon", L, Y(0) - 4, w, css("--muted"));
+    const noMask = !mask;
     // paths over the period
     const path = (azs, els, col) => {
       ctx.strokeStyle = col; ctx.globalAlpha = 0.55; ctx.lineWidth = 1.5; ctx.beginPath();
@@ -524,6 +529,8 @@
       ctx.strokeStyle = css("--bg"); ctx.stroke();
       label(ctx, `${nm} ${nf(el, 2)}°`, X(az) + r, Y(el) - r - 2, w, col);
     }
+    ctx.restore();
+    if (noMask) label(ctx, S.lang === "pt" ? "sem máscara LOLA: horizonte da esfera" : "no LOLA mask: spherical horizon", L, Y(0) - 4, w, css("--muted"));
   }
 
   // ------------------------------------------------------------------ timeline

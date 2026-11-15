@@ -44,10 +44,24 @@
     return { t: (Ea - el.e * Math.sin(Ea)) / el.n, nu };
   }
   /** radius and true anomaly at time t (s) after perigee */
+  /** Kepler's equation E - e sin E = M for 0 <= e < 1.  f(E) is monotonic, so the root is bracketed
+   *  in [0, 2pi) after reducing M; Newton steps are kept inside the bracket (bisection otherwise).
+   *  Plain Newton from E0 = M diverged for e ~ 0.97 (our transfer orbits) - see orbit.test.mjs. */
+  function solveKepler(M, e) {
+    const TWO_PI = 2 * Math.PI, k = Math.floor(M / TWO_PI), m = M - k * TWO_PI;
+    let lo = 0, hi = TWO_PI, E = m < Math.PI ? Math.min(m + e, Math.PI) : Math.max(m - e, Math.PI);
+    for (let i = 0; i < 100; i++) {
+      const f = E - e * Math.sin(E) - m;
+      if (Math.abs(f) < 1e-14) break;
+      if (f > 0) hi = E; else lo = E;
+      let En = E - f / (1 - e * Math.cos(E));
+      if (!(En > lo && En < hi)) En = (lo + hi) / 2;
+      E = En;
+    }
+    return E + k * TWO_PI;
+  }
   function stateAt(el, t) {
-    const M = el.n * t;
-    let Ea = M;
-    for (let k = 0; k < 30; k++) { const f = Ea - el.e * Math.sin(Ea) - M; Ea -= f / (1 - el.e * Math.cos(Ea)); if (Math.abs(f) < 1e-13) break; }
+    const Ea = solveKepler(el.n * t, el.e);
     const nu = 2 * Math.atan2(Math.sqrt(1 + el.e) * Math.sin(Ea / 2), Math.sqrt(1 - el.e) * Math.cos(Ea / 2));
     return { r: el.a * (1 - el.e * Math.cos(Ea)), nu };
   }
@@ -134,7 +148,7 @@
     return null;
   }
 
-  const api = { MU, RE, PARK_KM, ENTRY_KM, BASES, ZONES, rotationBoost, minInclination, ellipse, timeToRadius, stateAt,
+  const api = { MU, RE, PARK_KM, ENTRY_KM, BASES, ZONES, rotationBoost, minInclination, ellipse, timeToRadius, stateAt, solveKepler,
                 fastEllipse, outbound, inbound, legPosition, returnWindows, nextMoonrise, moonPolar, sunElevationAt, startUI };
   return api;
 
@@ -301,7 +315,7 @@
       const lab = (txt, x, y, col) => { const m = ctx.measureText(txt).width; ctx.fillStyle = col; ctx.fillText(txt, x + 10 + m > w ? x - 10 - m : x + 10, y + 4); };
       lab(t("moon"), mx, my, css("--ink"));
       const c = craftAt(tm), [kx, ky] = P(c.theta, c.r);
-      ctx.fillStyle = css("--craft"); ctx.beginPath(); ctx.arc(kx, ky, 5, 0, 2 * Math.PI); ctx.fill(); lab(t("craft"), kx, ky + 12, css("--craft"));
+      ctx.fillStyle = css("--craft"); ctx.beginPath(); ctx.arc(kx, ky, 5, 0, 2 * Math.PI); ctx.fill(); lab(t("craft"), kx + 4, ky - 14, css("--craft"));
       $("#topTime").textContent = fmt(tm);
     }
     let distGeom = null;
