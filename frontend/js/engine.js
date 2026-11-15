@@ -293,9 +293,19 @@
     return Math.asin(Math.max(-1, Math.min(1, sin(lat) * sin(subLat) + cos(lat) * cos(subLat) * cos(lon - subLon)))) * R2D;
   }
 
+  /** Sun elevation/azimuth (geometric, no refraction) from an Earth site: Meeus ch. 13/25. */
+  function sunAltazFromEarth(t, lat, lonEast) {
+    const jde = jdTT(t), [ls, , ds] = sunGeocentric(jde), eps = meanObliquity(jde);
+    const ra = Math.atan2(cos(eps) * sin(ls), cos(ls)) * R2D, dec = Math.asin(sin(eps) * sin(ls)) * R2D;
+    const H = gmstDeg(t) + lonEast - ra;
+    const el = Math.asin(sin(lat) * sin(dec) + cos(lat) * cos(dec) * cos(H)) * R2D;
+    const az = norm360(Math.atan2(-sin(H), Math.tan(dec * D2R) * cos(lat) - sin(lat) * cos(H)) * R2D);
+    return [az, el, ds];
+  }
+
   return { DELTA_T_S, MOON_RADIUS_KM, I_MOON, julianDay, jdTT, centuries, moonFundamental,
            moonGeocentric, sunGeocentric, selenographicSubpoint, moonState, sunEarthAltazOnMoon,
            gmstDeg, meanObliquity, moonAltazFromEarth, norm180, norm360,
            altazFromState, DSN_SITES, analyticBundle, SUN_RADIUS_DEG, depressionDeg, maskAt, effectiveHorizon,
-           discFraction, evaluate, intervals, summarize, sphericalElevation };
+           discFraction, evaluate, intervals, summarize, sphericalElevation, sunAltazFromEarth };
 });

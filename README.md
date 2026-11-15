@@ -1,6 +1,6 @@
 # Janela Polar — NASA Space Apps Challenge 2026
 
-Work in progress (stage 4 of 8). Full README with sources and the "AI assistance" section comes in stage 8.
+Work in progress (stage 5 of 8). Full README with sources and the "AI assistance" section comes in stage 8.
 
 Run tests:
 ```
@@ -59,3 +59,14 @@ After editing `backend/data/sites.json` run `python scripts/precompute.py --site
 * **3 km contrast pairs** — `scripts/find_contrast_pair.py`: highest DEM point near the USGS region centre and the
   lowest point 2.5–3.5 km away (de Gerlache Rim 2 and Nobile Rim 2). Chosen from the DEM, not from a published
   illumination map; illumination numbers are this app's model.
+
+## Earth to Moon page (stage 5)
+
+`frontend/terra-lua.html`: two-body Kepler transfers with Earth's gravity only (μ = 398600.4418 km³/s²) from a
+185 km parking orbit — Hohmann (~5 d, Δv ≈ 3.1 km/s) and a 3-day fast transfer whose apogee (beyond the Moon) is
+found by bisection; the aim point is the Moon's position at arrival, iterated. The return runs the same kind of
+ellipse backwards to the 122 km entry interface; return windows are departures giving Sun ≥ 10° at the recovery
+zone at entry (Apollo daylight-recovery rule). Launch sites: Earth-rotation boost 465.1·cos(lat) m/s, minimum
+inclination = latitude, Moon elevation and next moonrise. The button "See this site and date in Janela Polar"
+opens `index.html?site=<id>&start=<arrival date>&days=30&lang=<en|pt>`. Simplifications (no lunar gravity, ecliptic
+plane only) are stated on the page.

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Earth to Moon — Janela Polar</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%2310151c%22 stroke=%22%23f5a524%22 stroke-width=%223%22/%3E%3Cpath d=%22M16 2a14 14 0 0 1 0 28z%22 fill=%22%23c9d1d9%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span class="logo" aria-hidden="true"></span><div><h1>JANELA POLAR</h1><p class="tag" data-t="tagline">Sun &amp; Earth windows for lunar landing sites</p></div></div>
+  <nav class="nav">
+    <a href="index.html" data-t="nav_polar">Polar Window</a>
+    <a href="terra-lua.html" class="active" data-t="nav_trip">Earth to Moon</a>
+    <a href="dados-nasa.html" data-t="nav_data">NASA Data</a>
+  </nav>
+  <div class="top-actions">
+    <button id="langBtn" class="btn ghost" type="button" aria-label="Switch language">PT</button>
+    <button id="themeBtn" class="btn ghost" type="button" aria-label="Toggle light/dark theme">◐</button>
+  </div>
+</header>
+
+<section class="scenarios">
+  <h2 data-t="title">From Earth to the Moon — and back</h2>
+  <p class="plain" data-t="lead"></p>
+</section>
+
+<section class="controls" aria-label="Controls">
+  <label><span data-t="c_launch">Launch</span><input id="cLaunch" type="date"></label>
+  <label><span data-t="c_delay">Launch delay</span><span class="rng"><input id="cDelay" type="range" min="0" max="14" step="1" value="0"><output id="oDelay">0 d</output></span></label>
+  <label><span data-t="c_kind">Trajectory</span><select id="cKind"><option value="hohmann" data-t="k_h">Hohmann</option><option value="fast" data-t="k_f">Fast</option></select></label>
+  <label><span data-t="c_stay">Surface stay</span><select id="cStay"><option value="3">3 d</option><option value="6.5" selected>6.5 d</option><option value="10">10 d</option></select></label>
+  <label><span data-t="c_site">Landing site</span><select id="cSite"></select></label>
+  <label><span data-t="c_zone">Recovery zone</span><select id="cZone"></select></label>
+</section>
+
+<main class="grid">
+  <section class="card">
+    <div class="card-head"><h2 data-t="top">Top view</h2><span id="topTime" class="mono small"></span></div>
+    <canvas id="top" aria-label="Top view of the Earth-Moon trip"></canvas>
+    <p class="note" data-t="legend"></p>
+  </section>
+  <section class="card panel">
+    <h2 data-t="mission">Mission</h2>
+    <div id="summary" class="kpis" style="margin-top:.5rem"></div>
+    <h3 data-t="link_title">Delay → arrival → which site is lit</h3>
+    <div id="linkBox"></div>
+  </section>
+  <section class="card wide">
+    <div class="card-head"><h2 data-t="dist">Distance from Earth</h2><button id="playBtn" class="btn" type="button">▶</button></div>
+    <canvas id="dist" aria-label="Distance from Earth versus time"></canvas>
+  </section>
+  <section class="card wide">
+    <h2 data-t="rw_title">Return windows</h2>
+    <div id="rw" style="margin-top:.5rem"></div>
+  </section>
+  <section class="card wide">
+    <h2 data-t="bases">Launch sites</h2>
+    <div class="table-wrap" style="margin-top:.5rem"><table id="bases" class="tbl"></table></div>
+    <p class="note" data-t="notes"></p>
+  </section>
+</main>
+<footer class="foot"><p class="note">Janela Polar · NASA Space Apps Challenge 2026 · μ⊕ = 398600.4418 km³/s² · Meeus, <i>Astronomical Algorithms</i> (Moon, Sun) · not an official NASA product.</p></footer>
+<script src="js/engine.js"></script>
+<script src="js/sites_static.js"></script>
+<script src="js/terra-lua.js"></script>
+</body>
+</html>
