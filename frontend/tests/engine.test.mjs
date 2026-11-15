@@ -44,3 +44,26 @@ test("JS == Python: Moon from DSN complexes", () => {
     assert.ok(adiff(az, p.azel[0]) < 1e-6 && Math.abs(el - p.azel[1]) < TOL_DEG);
   }
 });
+
+test("JS window rules == windows.py on identical series", () => {
+  for (const c of ref.windows) {
+    const p = c.params;
+    const ev = E.evaluate(c.series, c.dsn, p.mask, p.margin, p.height, p.dsn_min);
+    for (const k of ["sun", "dte", "ideal", "earth_up"]) assert.deepEqual(ev[k], c.flags[k], k);
+    ev.sun_frac.forEach((f, i) => assert.ok(Math.abs(f - c.sun_frac[i]) < 1e-12));
+    const s = E.summarize(c.times, ev, p.return_hours);
+    for (const [k, v] of Object.entries(c.summary)) {
+      if (typeof v === "number") assert.ok(Math.abs(s[k] - v) < 1e-9, k); else assert.equal(s[k], v, k);
+    }
+    assert.deepEqual(s.intervals, c.intervals);
+    assert.deepEqual(s.return_windows.map((r) => [r.start, r.latest_start, r.sunset]), c.return_windows);
+  }
+});
+
+test("analyticBundle == sunEarthAltazOnMoon", () => {
+  const t0 = Date.UTC(2026, 10, 15);
+  const b = E.analyticBundle([{ id: "x", lat: -85, lon: 120 }], t0, 1);
+  const r = E.sunEarthAltazOnMoon(t0 + 5 * 3600000, -85, 120);
+  assert.equal(b.sites[0].series.sun_el[5], r.sun[1]);
+  assert.equal(b.times.length, 24);
+});

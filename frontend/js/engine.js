@@ -176,7 +176,126 @@
     return enuAltaz([xf, yf, ze], site, lat, lonEast);
   }
 
+  /** Same as sunEarthAltazOnMoon but reusing a precomputed moonState (fast batch). */
+  function altazFromState(st, lat, lonEast, altKm = 0) {
+    const site = sph2vec(lonEast, lat, MOON_RADIUS_KM + altKm);
+    return {
+      sun: enuAltaz(sph2vec(st.subsolar_lon, st.subsolar_lat, st.sun_dist_km), site, lat, lonEast),
+      earth: enuAltaz(sph2vec(st.subearth_lon, st.subearth_lat, st.earth_dist_km), site, lat, lonEast),
+    };
+  }
+
+  // ---- DSN complexes (lat, lon east) - backend/app/config.py
+  const DSN_SITES = { goldstone: [35.4267, -116.89], madrid: [40.4314, -4.2481], canberra: [-35.4014, 148.9817] };
+
+  /** Analytic bundle with the same shape as /api/bundle. points: [{id, lat, lon}] */
+  function analyticBundle(points, startMs, days, stepMin = 60) {
+    const n = Math.round(days * 24 * 60 / stepMin), times = [], states = [];
+    for (let i = 0; i < n; i++) { const t = startMs + i * stepMin * 60000; times.push(t); states.push(moonState(t)); }
+    const dsn = {};
+    for (const [k, [la, lo]] of Object.entries(DSN_SITES)) dsn[k] = times.map((t) => moonAltazFromEarth(t, la, lo)[1]);
+    const sites = points.map((p) => {
+      const s = { sun_az: [], sun_el: [], earth_az: [], earth_el: [] };
+      for (const st of states) {
+        const r = altazFromState(st, p.lat, p.lon);
+        s.sun_az.push(r.sun[0]); s.sun_el.push(r.sun[1]); s.earth_az.push(r.earth[0]); s.earth_el.push(r.earth[1]);
+      }
+      return { id: p.id, series: s };
+    });
+    return { times, dsn, sites, states };
+  }
+
+  // ---- window rules: line-by-line port of backend/app/windows.py
+  const SUN_RADIUS_DEG = 0.2666, HOUR = 3600000;
+  function depressionDeg(heightM, radiusKm = MOON_RADIUS_KM) {
+    if (heightM <= 0) return 0;
+    const R = radiusKm * 1000;
+    return Math.acos(R / (R + heightM)) * R2D;
+  }
+  function maskAt(mask, az) {
+    if (!mask || !mask.length) return 0;
+    const n = mask.length, x = (((az % 360) + 360) % 360) * n / 360;
+    const i = Math.floor(x) % n, f = x - Math.floor(x);
+    return mask[i] * (1 - f) + mask[(i + 1) % n] * f;
+  }
+  const effectiveHorizon = (az, mask, marginDeg = 0, heightM = 0) => maskAt(mask, az) + marginDeg - depressionDeg(heightM);
+  function discFraction(el, horizon, radius = SUN_RADIUS_DEG) {
+    const d = el - horizon;
+    if (d >= radius) return 1;
+    if (d <= -radius) return 0;
+    const r = radius, below = r * r * Math.acos(d / r) - d * Math.sqrt(r * r - d * d);
+    return 1 - below / (Math.PI * r * r);
+  }
+  function evaluate(series, dsn, mask = null, marginDeg = 0, heightM = 0, dsnMinEl = 10) {
+    const n = series.sun_el.length, keys = Object.keys(dsn);
+    const out = { sun_frac: [], sun: [], earth_up: [], dsn_any: [], dte: [], ideal: [], hz_sun: [], hz_earth: [], dsn_active: [] };
+    for (let i = 0; i < n; i++) {
+      const hs = effectiveHorizon(series.sun_az[i], mask, marginDeg, heightM);
+      const he = effectiveHorizon(series.earth_az[i], mask, marginDeg, heightM);
+      const frac = discFraction(series.sun_el[i], hs);
+      const active = keys.filter((k) => dsn[k][i] !== null && dsn[k][i] >= dsnMinEl);
+      const earthUp = series.earth_el[i] > he, dte = earthUp && active.length > 0, sun = frac >= 0.5;
+      out.sun_frac.push(frac); out.sun.push(sun); out.earth_up.push(earthUp); out.dsn_any.push(active.length > 0);
+      out.dte.push(dte); out.ideal.push(sun && dte); out.hz_sun.push(hs); out.hz_earth.push(he); out.dsn_active.push(active);
+    }
+    return out;
+  }
+  /** Runs of true as [startMs, endMs); end clipped to series end (+1 s tolerance). */
+  function intervals(times, flags, stepMs) {
+    const out = []; let start = null;
+    if (!times.length) return out;
+    const tEnd = times[times.length - 1] + stepMs;
+    for (let i = 0; i < times.length; i++) {
+      if (flags[i] && start === null) start = times[i];
+      else if (!flags[i] && start !== null) { out.push([start, times[i]]); start = null; }
+    }
+    if (start !== null) out.push([start, tEnd]);
+    return out.map(([a, b]) => [a, Math.min(b, tEnd + 1000)]);
+  }
+  const hoursOf = (iv) => iv.reduce((s, [a, b]) => s + (b - a), 0) / HOUR;
+  const longestGap = (times, flags, stepMs) =>
+    intervals(times, flags.map((f) => !f), stepMs).reduce((m, iv) => Math.max(m, (iv[1] - iv[0]) / HOUR), 0);
+  function nextChange(times, flags, i0, toValue) {
+    for (let i = i0; i < times.length; i++) if (flags[i] === toValue) return times[i];
+    return null;
+  }
+  function summarize(times, ev, returnHours = 8, nowMs = null) {
+    if (!times.length) return {};
+    const step = times.length > 1 ? times[1] - times[0] : HOUR;
+    const now = nowMs === null ? times[0] : nowMs;
+    let i0 = times.findIndex((t) => t >= now); if (i0 < 0) i0 = times.length - 1;
+    const sunIv = intervals(times, ev.sun, step), dteIv = intervals(times, ev.dte, step), idealIv = intervals(times, ev.ideal, step);
+    const need = returnHours * HOUR, ret = [];
+    for (const [a, b] of idealIv) {
+      if (b - a + 1000 >= need) {
+        const s = sunIv.find(([sa, sb]) => sa <= a && a < sb + 1000);
+        ret.push({ start: a, end: b, latest_start: b - need, sunset: s ? s[1] : null, hours: (b - a) / HOUR });
+      }
+    }
+    const span = (times[times.length - 1] + step - times[0]) / HOUR;
+    const sunNow = ev.sun[i0], dteNow = ev.dte[i0];
+    return {
+      span_hours: span, sun_hours: hoursOf(sunIv), dte_hours: hoursOf(dteIv), ideal_hours: hoursOf(idealIv),
+      sun_pct: 100 * hoursOf(sunIv) / span, dte_pct: 100 * hoursOf(dteIv) / span, ideal_pct: 100 * hoursOf(idealIv) / span,
+      longest_night_hours: longestGap(times, ev.sun, step), longest_no_dte_hours: longestGap(times, ev.dte, step),
+      status: sunNow && dteNow ? "ideal" : sunNow ? "sun_only" : dteNow ? "dte_only" : "dark",
+      next_sunset: sunNow ? nextChange(times, ev.sun, i0, false) : null,
+      next_sunrise: !sunNow ? nextChange(times, ev.sun, i0, true) : null,
+      next_earthset: ev.earth_up[i0] ? nextChange(times, ev.earth_up, i0, false) : null,
+      next_earthrise: !ev.earth_up[i0] ? nextChange(times, ev.earth_up, i0, true) : null,
+      next_ideal: (() => { const iv = idealIv.find(([, b]) => b > now); return iv ? { start: iv[0], end: iv[1] } : null; })(),
+      intervals: { sun: sunIv, dte: dteIv, ideal: idealIv }, return_windows: ret, return_hours: returnHours,
+    };
+  }
+
+  /** Sun elevation (deg, spherical Moon, no relief) at (lat, lon) for a subsolar point - for map shading. */
+  function sphericalElevation(lat, lon, subLat, subLon) {
+    return Math.asin(Math.max(-1, Math.min(1, sin(lat) * sin(subLat) + cos(lat) * cos(subLat) * cos(lon - subLon)))) * R2D;
+  }
+
   return { DELTA_T_S, MOON_RADIUS_KM, I_MOON, julianDay, jdTT, centuries, moonFundamental,
            moonGeocentric, sunGeocentric, selenographicSubpoint, moonState, sunEarthAltazOnMoon,
-           gmstDeg, meanObliquity, moonAltazFromEarth, norm180, norm360 };
+           gmstDeg, meanObliquity, moonAltazFromEarth, norm180, norm360,
+           altazFromState, DSN_SITES, analyticBundle, SUN_RADIUS_DEG, depressionDeg, maskAt, effectiveHorizon,
+           discFraction, evaluate, intervals, summarize, sphericalElevation };
 });

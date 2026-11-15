@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Janela Polar — Lunar South Pole Sun &amp; Earth Windows</title>
+<meta name="description" content="Compare lunar landing sites: sunlight, direct-to-Earth communication and return windows, from JPL Horizons and LOLA terrain.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22%2310151c%22 stroke=%22%23f5a524%22 stroke-width=%223%22/%3E%3Cpath d=%22M16 2a14 14 0 0 1 0 28z%22 fill=%22%23c9d1d9%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo" aria-hidden="true"></span>
+    <div>
+      <h1>JANELA POLAR</h1>
+      <p class="tag" data-i18n="tagline">Sun &amp; Earth windows for lunar landing sites</p>
+    </div>
+  </div>
+  <nav class="nav">
+    <a href="index.html" class="active" data-i18n="nav_polar">Polar Window</a>
+    <a href="terra-lua.html" data-i18n="nav_trip">Earth to Moon</a>
+    <a href="dados-nasa.html" data-i18n="nav_data">NASA Data</a>
+  </nav>
+  <div class="top-actions">
+    <span id="srcBadge" class="badge" title="">…</span>
+    <button id="langBtn" class="btn ghost" type="button" aria-label="Switch language">PT</button>
+    <button id="themeBtn" class="btn ghost" type="button" aria-label="Toggle light/dark theme">◐</button>
+  </div>
+</header>
+
+<section class="scenarios" aria-labelledby="scnTitle">
+  <h2 id="scnTitle" data-i18n="scn_title">Guided Mission Scenarios</h2>
+  <div class="scn-buttons">
+    <button class="btn scn" type="button" data-scn="delay"><b>1</b> <span data-i18n="scn1">Launch Delay (+5 days at Malapert)</span></button>
+    <button class="btn scn" type="button" data-scn="contrast"><b>2</b> <span data-i18n="scn2">3 km Spatial Contrast</span></button>
+    <button class="btn scn" type="button" data-scn="farside"><b>3</b> <span data-i18n="scn3">Far Side Relay Need (Chang'e 6)</span></button>
+  </div>
+  <div id="scnSummary" class="scn-summary" hidden></div>
+</section>
+
+<section class="controls" aria-label="Controls">
+  <label><span data-i18n="c_set">Sites</span>
+    <select id="cSet">
+      <option value="all" data-i18n="set_all">All</option>
+      <option value="artemis3" data-i18n="set_artemis3">Artemis III regions</option>
+      <option value="landers" data-i18n="set_landers">Recent landers</option>
+      <option value="apollo" data-i18n="set_apollo">Apollo</option>
+      <option value="mine" data-i18n="set_mine">My sites</option>
+    </select></label>
+  <label><span data-i18n="c_start">Start (UTC)</span><input id="cStart" type="date"></label>
+  <label><span data-i18n="c_days">Period</span>
+    <select id="cDays"><option>14</option><option selected>30</option><option>60</option><option>90</option></select></label>
+  <label><span data-i18n="c_margin">Horizon margin</span><span class="rng"><input id="cMargin" type="range" min="0" max="3" step="0.1" value="0"><output id="oMargin">0.0°</output></span></label>
+  <label><span data-i18n="c_height">Point height</span><span class="rng"><input id="cHeight" type="range" min="0" max="20" step="0.5" value="0"><output id="oHeight">0 m</output></span></label>
+  <label><span data-i18n="c_dsn">DSN min. elevation</span><span class="rng"><input id="cDsn" type="range" min="0" max="30" step="1" value="10"><output id="oDsn">10°</output></span></label>
+  <label><span data-i18n="c_return">Return window ≥</span>
+    <select id="cReturn"><option>4</option><option selected>8</option><option>12</option><option>24</option></select></label>
+</section>
+
+<main class="grid">
+  <section class="card map-card">
+    <div class="card-head">
+      <h2 data-i18n="map_title">Map</h2>
+      <div class="seg" role="group">
+        <button type="button" class="seg-btn on" data-map="polar" data-i18n="map_polar">South polar</button>
+        <button type="button" class="seg-btn" data-map="global" data-i18n="map_global">Whole Moon</button>
+      </div>
+    </div>
+    <canvas id="map" aria-label="Map of sites with sunlight"></canvas>
+    <p class="legend"><i class="sw ideal"></i><span data-i18n="st_ideal">Ideal</span> <i class="sw sun"></i><span data-i18n="st_sun_only">Sun only</span> <i class="sw dte"></i><span data-i18n="st_dte_only">DTE only</span> <i class="sw dark"></i><span data-i18n="st_dark">Dark</span> <i class="sw line"></i><span data-i18n="map_earthline">Earth on horizon</span></p>
+    <p class="note" data-i18n="map_note">Map shading: analytic model on a smooth sphere (no terrain). Site colours use the active data source and LOLA terrain when available.</p>
+  </section>
+
+  <section class="card panel" id="sitePanel" aria-live="polite"></section>
+
+  <section class="card horizon-card">
+    <div class="card-head"><h2 data-i18n="hz_title">Local horizon</h2><span class="note" data-i18n="hz_sub">Sun &amp; Earth paths over the period</span></div>
+    <canvas id="horizon" aria-label="Horizon chart"></canvas>
+  </section>
+
+  <section class="card wide">
+    <div class="card-head">
+      <h2 data-i18n="tl_title">Timeline</h2>
+      <div class="tl-ctrl">
+        <button id="playBtn" class="btn" type="button">▶</button>
+        <span id="cursorTime" class="mono"></span>
+        <button id="csvBtn" class="btn ghost" type="button" data-i18n="csv">Download CSV</button>
+      </div>
+    </div>
+    <canvas id="timeline" aria-label="Timeline of Sun, DTE, ideal and return windows"></canvas>
+  </section>
+
+  <section class="card wide">
+    <div class="card-head">
+      <h2 data-i18n="hm_title">Best landing date</h2>
+      <label class="inline"><span data-i18n="hm_mission">Mission length</span>
+        <select id="cMission"><option value="3">3 d</option><option value="6.5" selected>6.5 d</option><option value="10">10 d</option></select></label>
+    </div>
+    <p class="note" data-i18n="hm_note">Colour = share of the mission with Sun and DTE together, if landing on that day (00:00 UTC). Click a cell to open that site and date.</p>
+    <canvas id="heat" aria-label="Heatmap of sites by landing day"></canvas>
+    <p id="heatInfo" class="mono small"></p>
+  </section>
+
+  <section class="card wide">
+    <div class="card-head"><h2 data-i18n="cmp_title">Compare sites</h2></div>
+    <div class="table-wrap"><table id="compare" class="tbl"></table></div>
+    <form id="pointForm" class="point-form">
+      <strong data-i18n="pt_title">Add your own coordinate</strong>
+      <input id="pName" type="text" maxlength="30" placeholder="Name" aria-label="Name">
+      <input id="pLat" type="number" step="0.0001" min="-90" max="90" placeholder="Lat (−90…90)" required aria-label="Latitude">
+      <input id="pLon" type="number" step="0.0001" min="-180" max="360" placeholder="Lon E (−180…360)" required aria-label="Longitude east">
+      <button class="btn" type="submit" data-i18n="pt_add">Add</button>
+      <span id="pMsg" class="note"></span>
+    </form>
+  </section>
+
+  <section class="card wide">
+    <div class="card-head"><h2 data-i18n="pin_title">Pinned scenarios</h2><span class="note" data-i18n="pin_sub">site + date, best value of each column highlighted</span></div>
+    <div class="table-wrap"><table id="pinned" class="tbl"></table></div>
+  </section>
+
+  <section class="card wide why">
+    <h2 data-i18n="why_title">Why is the south pole different?</h2>
+    <div class="why-grid">
+      <div data-i18n-html="why_1"></div>
+      <div data-i18n-html="why_2"></div>
+      <div data-i18n-html="why_3"></div>
+    </div>
+    <div id="pairBox" class="pair"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <p data-i18n-html="foot_sources"></p>
+  <p class="note" data-i18n="foot_ai">Built for the NASA Space Apps Challenge 2026. Code and texts written with AI assistance and reviewed by the team (see README). Not an official NASA product.</p>
+</footer>
+
+<script src="js/engine.js"></script>
+<script src="js/sites_static.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -70,6 +70,9 @@ def tmp_cache(tmp_path, monkeypatch):
     monkeypatch.setattr(config, "CACHE_DIR", tmp_path)
     monkeypatch.setattr(horizons, "_cache", None)
     monkeypatch.setattr(horizons.time, "sleep", lambda s: None)
+    horizons.reset_breaker()
+    yield
+    horizons.reset_breaker()
 
 
 def test_retry_on_5xx_then_success_and_cache():
@@ -104,3 +107,15 @@ def test_real_fixture_parses():
     res = json.loads(REAL[0].read_text())["result"]
     s = horizons.azel_series(horizons.parse_table(res))
     assert len(s) >= 20 and all(-90 <= el <= 90 for _, _, el in s if el is not None)
+
+
+def test_breaker_skips_horizons_after_failure():
+    sess = FakeSession([FakeResp(500, {})] * config.HORIZONS_RETRIES)
+    with pytest.raises(horizons.HorizonsError):
+        horizons.fetch({"d": 4}, session=sess)
+    sess2 = FakeSession([FakeResp(200, {"result": SYNTH})])
+    with pytest.raises(horizons.HorizonsError, match="recent failure"):
+        horizons.fetch({"e": 5}, session=sess2)
+    assert sess2.calls == 0
+    horizons.reset_breaker()
+    assert "$$SOE" in horizons.fetch({"e": 5}, session=sess2)

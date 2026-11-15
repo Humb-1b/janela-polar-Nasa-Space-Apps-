@@ -1,6 +1,6 @@
 # Janela Polar — NASA Space Apps Challenge 2026
 
-Work in progress (stage 2 of 8). Full README with sources and the "AI assistance" section comes in stage 8.
+Work in progress (stage 3 of 8). Full README with sources and the "AI assistance" section comes in stage 8.
 
 Run tests:
 ```
@@ -33,3 +33,11 @@ model; the response then says `analytic-fallback` and the result is not kept in 
 Coordinates: landers and Apollo LMs are from the NASA NSSDC table (checked 2026-11-14).
 The 9 Artemis III regions are listed but have **no coordinates yet** — they will come from the
 USGS navigation grids (McClernan 2024, doi:10.5066/P1MEQ6UK) in stage 4.
+
+## Janela Polar page (stage 3)
+
+Open `frontend/index.html` directly (analytic engine in the browser) or through the backend
+(`cd backend && python -m app.api`, then http://127.0.0.1:5000) to use JPL Horizons.
+Data source order, shown in the badge: backend API → precomputed bundle (`frontend/data/`) → browser engine.
+URL parameters: `?site=<id>&start=YYYY-MM-DD&days=<n>&lang=en|pt`.
+After editing `backend/data/sites.json` run `python scripts/precompute.py --sites-only`.

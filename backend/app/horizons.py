@@ -20,6 +20,10 @@ from .cache import DiskCache
 
 _SEM = threading.BoundedSemaphore(config.HORIZONS_MAX_CONCURRENT)
 _cache: DiskCache | None = None
+# Circuit breaker: after Horizons fails all retries, skip it for a while so that
+# 'auto' mode answers quickly from the analytic model instead of waiting per site.
+BREAKER_S = 300
+_down_until = 0.0
 
 
 class HorizonsError(RuntimeError):
@@ -101,6 +105,9 @@ def fetch(params: dict, session=None, use_cache: bool = True) -> str:
         hit = cache.get(key)
         if hit is not None:
             return hit["result"]
+    global _down_until
+    if time.monotonic() < _down_until:
+        raise HorizonsError("Horizons marked unavailable after a recent failure (retrying in a few minutes)")
     http = session or requests
     last = None
     for attempt in range(config.HORIZONS_RETRIES):
@@ -125,7 +132,13 @@ def fetch(params: dict, session=None, use_cache: bool = True) -> str:
                     cache.set(key, {"result": result, "signature": data.get("signature")})
                 return result
         time.sleep(min(8.0, 1.5 * 2 ** attempt))
+    _down_until = time.monotonic() + BREAKER_S
     raise HorizonsError(f"Horizons unavailable after {config.HORIZONS_RETRIES} tries: {last}")
+
+
+def reset_breaker():
+    global _down_until
+    _down_until = 0.0
 
 
 def _num(s: str):

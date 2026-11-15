@@ -142,3 +142,18 @@ def test_bundle_has_series_dsn_and_masks(client, monkeypatch, tmp_path):
     assert len(by) == 7 and by["im1"]["has_horizon_mask"] and len(by["im1"]["horizon_mask"]) == 360
     assert by["ch3"]["horizon_mask"] is None
     assert len(by["ce4"]["series"]["sun_el"]) == 72
+
+
+def test_static_sites_in_sync_with_sites_json():
+    """frontend/data/sites_static.json must be regenerated when sites.json changes."""
+    import importlib.util
+    import json
+    root = config.BASE_DIR.parent
+    spec = importlib.util.spec_from_file_location("pre", root / "scripts" / "precompute.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    fresh = json.loads(json.dumps(mod.static_sites(), ensure_ascii=False))
+    stored = json.loads((root / "frontend" / "data" / "sites_static.json").read_text(encoding="utf-8"))
+    assert fresh == stored, "run: python scripts/precompute.py --sites-only"
+    js = (root / "frontend" / "js" / "sites_static.js").read_text(encoding="utf-8")
+    assert json.loads(js.split("=", 1)[1].strip().rstrip(";")) == stored
