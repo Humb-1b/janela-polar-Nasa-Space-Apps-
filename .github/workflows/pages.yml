@@ -26,6 +26,9 @@ jobs:
         id: pre
         continue-on-error: true      # if Horizons is down the site still deploys (browser engine)
         run: python scripts/precompute.py --days 30 --mode horizons
+      - name: Validation table vs Horizons (published as data/validation.json)
+        continue-on-error: true
+        run: python scripts/validation_table.py
       - name: Report
         run: |
           echo "precompute outcome: ${{ steps.pre.outcome }}"
