@@ -131,7 +131,23 @@
     $("#csa").innerHTML = `<h2>${t("csa_title")}</h2><div class="why-grid">${t("csa_body").map((p) => `<div>${p}</div>`).join("")}</div>
       <p class="note">${t("csa_src")} ${ext(URLS.csa, "asc-csa.gc.ca")}</p>`;
   }
-  $("#langBtn").onclick = () => { S.lang = S.lang === "pt" ? "en" : "pt"; store.set("lang", S.lang); render(); };
+  let VAL = null;
+  function renderValidation() {
+    const el = $("#validation");
+    const title = S.lang === "pt" ? "Validação: modelo analítico × JPL Horizons" : "Validation: analytic model vs JPL Horizons";
+    const note = S.lang === "pt"
+      ? "Diferença máxima em graus, 24 amostras por célula, sem relevo nos dois lados. Recalculado a cada publicação do site pelo GitHub Actions. Tolerância: 0,35°."
+      : "Maximum difference in degrees, 24 hourly samples per cell, no terrain on either side. Recomputed by GitHub Actions on every deployment. Tolerance: 0.35°.";
+    if (!VAL) { el.innerHTML = `<h2>${title}</h2><p class="note">${note}</p><p class="note">${S.lang === "pt" ? "Tabela disponível no site publicado e no README." : "Table available on the published site and in the README."}</p>`; return; }
+    const f = (x) => (x === null ? "—" : x.toFixed(3) + "°");
+    el.innerHTML = `<h2>${title}</h2><p class="note">${note} ${VAL.generated_utc} · worst ${f(VAL.worst_deg)}</p>
+      <div class="table-wrap"><table class="tbl"><thead><tr><th>Site</th><th>Date</th><th class="num">Sun Δel</th><th class="num">Sun Δaz·cos el</th><th class="num">Earth Δel</th><th class="num">Earth Δaz·cos el</th></tr></thead><tbody>
+      ${VAL.rows.map((r) => `<tr><td>${esc(r.name)}</td><td class="mono">${r.date}</td><td class="num">${f(r.sun_del_max)}</td><td class="num">${f(r.sun_daz_max)}</td><td class="num">${f(r.earth_del_max)}</td><td class="num">${f(r.earth_daz_max)}</td></tr>`).join("")}
+      </tbody></table></div>`;
+  }
+  if (/^https?:$/.test(location.protocol)) fetch("data/validation.json", { cache: "no-cache" }).then((r) => (r.ok ? r.json() : null)).then((j) => { VAL = j; renderValidation(); }).catch(() => {});
+  $("#langBtn").onclick = () => { S.lang = S.lang === "pt" ? "en" : "pt"; store.set("lang", S.lang); render(); renderValidation(); };
   $("#themeBtn").onclick = () => { S.theme = S.theme === "dark" ? "light" : "dark"; document.documentElement.dataset.theme = S.theme; store.set("theme", S.theme); };
   render();
+  renderValidation();
 })();

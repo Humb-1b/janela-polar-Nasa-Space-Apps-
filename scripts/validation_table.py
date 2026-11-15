@@ -48,11 +48,11 @@ def main():
            "worst_deg": worst, "rows": rows}
     (ROOT / "frontend" / "data").mkdir(parents=True, exist_ok=True)
     (ROOT / "frontend" / "data" / "validation.json").write_text(json.dumps(out, indent=1))
-    f = lambda x: "—" if x is None else f"{x:.3f}"
+    f = lambda x: "—" if x is None else f"{x:.3f}°"
     print("| Site | Date (UTC, 24 h) | Sun Δel max | Sun Δaz·cos(el) max | Earth Δel max | Earth Δaz·cos(el) max |")
     print("|---|---|---:|---:|---:|---:|")
     for r in rows:
-        print(f"| {r['name']} | {r['date']} | {f(r['sun_del_max'])}° | {f(r['sun_daz_max'])}° | {f(r['earth_del_max'])}° | {f(r['earth_daz_max'])}° |")
+        print(f"| {r['name']} | {r['date']} | {f(r['sun_del_max'])} | {f(r['sun_daz_max'])} | {f(r['earth_del_max'])} | {f(r['earth_daz_max'])} |")
     print(f"\nWorst difference: {worst:.3f}° (tolerance 0.35°). Generated {out['generated_utc']} from JPL Horizons.")
     return 0 if worst <= 0.35 else 1
 
