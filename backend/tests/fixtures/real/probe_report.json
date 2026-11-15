@@ -1,0 +1,308 @@
+[
+ {
+  "query": "sub_20261115",
+  "quantity": "subEarth lon",
+  "max_deg": 0.01718793969428134,
+  "mean_deg": 0.016043795693330292
+ },
+ {
+  "query": "sub_20261115",
+  "quantity": "subEarth lat",
+  "max_deg": 0.030583242537975064,
+  "mean_deg": 0.030494359144031646
+ },
+ {
+  "query": "sub_20261115",
+  "quantity": "subSun lon",
+  "max_deg": 0.009191160909608698,
+  "mean_deg": 0.008640058292066044
+ },
+ {
+  "query": "sub_20261115",
+  "quantity": "subSun lat",
+  "max_deg": 0.02335969027135354,
+  "mean_deg": 0.02103950044105432
+ },
+ {
+  "query": "sub_20270210",
+  "quantity": "subEarth lon",
+  "max_deg": 0.026719166015936935,
+  "mean_deg": 0.02585010728175992
+ },
+ {
+  "query": "sub_20270210",
+  "quantity": "subEarth lat",
+  "max_deg": 0.020374183871617824,
+  "mean_deg": 0.020038644600112326
+ },
+ {
+  "query": "sub_20270210",
+  "quantity": "subSun lon",
+  "max_deg": 0.03542260426007715,
+  "mean_deg": 0.0351802193530979
+ },
+ {
+  "query": "sub_20270210",
+  "quantity": "subSun lat",
+  "max_deg": 0.026178511341452732,
+  "mean_deg": 0.02606273157909451
+ },
+ {
+  "query": "sub_20270601",
+  "quantity": "subEarth lon",
+  "max_deg": 0.019797137773821305,
+  "mean_deg": 0.019231544100122733
+ },
+ {
+  "query": "sub_20270601",
+  "quantity": "subEarth lat",
+  "max_deg": 0.009086058175530987,
+  "mean_deg": 0.008463747444261482
+ },
+ {
+  "query": "sub_20270601",
+  "quantity": "subSun lon",
+  "max_deg": 0.030242801267320374,
+  "mean_deg": 0.029827284462420778
+ },
+ {
+  "query": "sub_20270601",
+  "quantity": "subSun lat",
+  "max_deg": 0.011685295205046131,
+  "mean_deg": 0.010079814911621188
+ },
+ {
+  "query": "sun_pole_89.5S_0E_20261115",
+  "quantity": "el",
+  "max_deg": 0.023287463893995053,
+  "mean_deg": 0.02096916258583752
+ },
+ {
+  "query": "sun_pole_89.5S_0E_20261115",
+  "quantity": "az",
+  "max_deg": 0.009184026485052366,
+  "mean_deg": 0.008621133488040974
+ },
+ {
+  "query": "earth_pole_89.5S_0E_20261115",
+  "quantity": "el",
+  "max_deg": 0.03085668359486604,
+  "mean_deg": 0.030727125075756544
+ },
+ {
+  "query": "earth_pole_89.5S_0E_20261115",
+  "quantity": "az",
+  "max_deg": 0.014268896965145281,
+  "mean_deg": 0.01361187002161039
+ },
+ {
+  "query": "sun_85S_120E_20261115",
+  "quantity": "el",
+  "max_deg": 0.023435562290828216,
+  "mean_deg": 0.021180862750942515
+ },
+ {
+  "query": "sun_85S_120E_20261115",
+  "quantity": "az",
+  "max_deg": 0.008799251033210154,
+  "mean_deg": 0.008089651677734818
+ },
+ {
+  "query": "earth_85S_120E_20261115",
+  "quantity": "el",
+  "max_deg": 0.029718994516857222,
+  "mean_deg": 0.02964906637063928
+ },
+ {
+  "query": "earth_85S_120E_20261115",
+  "quantity": "az",
+  "max_deg": NaN,
+  "mean_deg": NaN
+ },
+ {
+  "query": "sun_equator_0.67N_23.47E_20261115",
+  "quantity": "el",
+  "max_deg": 0.009262384758070286,
+  "mean_deg": 0.008742216571979775
+ },
+ {
+  "query": "sun_equator_0.67N_23.47E_20261115",
+  "quantity": "az",
+  "max_deg": 0.023256317230802688,
+  "mean_deg": 0.020918688962089507
+ },
+ {
+  "query": "earth_equator_0.67N_23.47E_20261115",
+  "quantity": "el",
+  "max_deg": 0.011586841046089091,
+  "mean_deg": 0.0115324845378962
+ },
+ {
+  "query": "earth_equator_0.67N_23.47E_20261115",
+  "quantity": "az",
+  "max_deg": 0.03214643562130263,
+  "mean_deg": 0.03170607858444141
+ },
+ {
+  "query": "sun_pole_89.5S_0E_20270210",
+  "quantity": "el",
+  "max_deg": 0.026388470030970612,
+  "mean_deg": 0.02629559671028273
+ },
+ {
+  "query": "sun_pole_89.5S_0E_20270210",
+  "quantity": "az",
+  "max_deg": 0.03541872071566793,
+  "mean_deg": 0.03519086090729726
+ },
+ {
+  "query": "earth_pole_89.5S_0E_20270210",
+  "quantity": "el",
+  "max_deg": 0.020303817453921624,
+  "mean_deg": 0.019900787342608067
+ },
+ {
+  "query": "earth_pole_89.5S_0E_20270210",
+  "quantity": "az",
+  "max_deg": 0.030567361945498396,
+  "mean_deg": 0.030122983568016258
+ },
+ {
+  "query": "sun_85S_120E_20270210",
+  "quantity": "el",
+  "max_deg": 0.027041058293473696,
+  "mean_deg": 0.026628155912415963
+ },
+ {
+  "query": "sun_85S_120E_20270210",
+  "quantity": "az",
+  "max_deg": 0.03541367873683523,
+  "mean_deg": 0.03493718803660518
+ },
+ {
+  "query": "earth_85S_120E_20270210",
+  "quantity": "el",
+  "max_deg": 0.02231246741219972,
+  "mean_deg": 0.0219365497440642
+ },
+ {
+  "query": "earth_85S_120E_20270210",
+  "quantity": "az",
+  "max_deg": 0.029138146649417666,
+  "mean_deg": 0.02866188318017462
+ },
+ {
+  "query": "sun_equator_0.67N_23.47E_20270210",
+  "quantity": "el",
+  "max_deg": 0.03529132138754498,
+  "mean_deg": 0.0350404080228619
+ },
+ {
+  "query": "sun_equator_0.67N_23.47E_20270210",
+  "quantity": "az",
+  "max_deg": NaN,
+  "mean_deg": NaN
+ },
+ {
+  "query": "earth_equator_0.67N_23.47E_20270210",
+  "quantity": "el",
+  "max_deg": 0.02669578405309636,
+  "mean_deg": 0.026517880503273084
+ },
+ {
+  "query": "earth_equator_0.67N_23.47E_20270210",
+  "quantity": "az",
+  "max_deg": 0.024718529242989208,
+  "mean_deg": 0.024693145392305514
+ },
+ {
+  "query": "sun_pole_89.5S_0E_20270601",
+  "quantity": "el",
+  "max_deg": 0.0118674450327092,
+  "mean_deg": 0.010238893921110187
+ },
+ {
+  "query": "sun_pole_89.5S_0E_20270601",
+  "quantity": "az",
+  "max_deg": 0.030342808670180743,
+  "mean_deg": 0.029942792026890326
+ },
+ {
+  "query": "earth_pole_89.5S_0E_20270601",
+  "quantity": "el",
+  "max_deg": 0.009507032322630948,
+  "mean_deg": 0.008855947355951114
+ },
+ {
+  "query": "earth_pole_89.5S_0E_20270601",
+  "quantity": "az",
+  "max_deg": 0.0235156448926894,
+  "mean_deg": 0.023362151054390583
+ },
+ {
+  "query": "sun_85S_120E_20270601",
+  "quantity": "el",
+  "max_deg": 0.009062148355714061,
+  "mean_deg": 0.007453766993134316
+ },
+ {
+  "query": "sun_85S_120E_20270601",
+  "quantity": "az",
+  "max_deg": 0.03129535511447351,
+  "mean_deg": 0.03075440208470942
+ },
+ {
+  "query": "earth_85S_120E_20270601",
+  "quantity": "el",
+  "max_deg": 0.011097696241124666,
+  "mean_deg": 0.0104415080173757
+ },
+ {
+  "query": "earth_85S_120E_20270601",
+  "quantity": "az",
+  "max_deg": 0.02280035583761718,
+  "mean_deg": 0.02269035813100687
+ },
+ {
+  "query": "sun_equator_0.67N_23.47E_20270601",
+  "quantity": "el",
+  "max_deg": 0.02908490018810994,
+  "mean_deg": 0.02812886850521797
+ },
+ {
+  "query": "sun_equator_0.67N_23.47E_20270601",
+  "quantity": "az",
+  "max_deg": NaN,
+  "mean_deg": NaN
+ },
+ {
+  "query": "earth_equator_0.67N_23.47E_20270601",
+  "quantity": "el",
+  "max_deg": 0.02124086153563809,
+  "mean_deg": 0.021112531178554644
+ },
+ {
+  "query": "earth_equator_0.67N_23.47E_20270601",
+  "quantity": "az",
+  "max_deg": 0.014021798763339746,
+  "mean_deg": 0.013521615565790271
+ },
+ {
+  "query": "moon_goldstone_20261115",
+  "quantity": "el",
+  "max_deg": 0.0015301765566171355,
+  "mean_deg": 0.0009196722079112032
+ },
+ {
+  "query": "moon_goldstone_20270210",
+  "quantity": "el",
+  "max_deg": 0.0018320425286191266,
+  "mean_deg": 0.001184321101998694
+ },
+ {
+  "query": "moon_goldstone_20270601",
+  "quantity": "el",
+  "max_deg": 0.001725557274838252,
+  "mean_deg": 0.0011873583846784632
+ }
+]
