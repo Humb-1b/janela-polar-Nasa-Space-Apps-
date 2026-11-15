@@ -17,7 +17,7 @@
     en: {
       tagline: "Sun & Earth windows for lunar landing sites", nav_polar: "Polar Window", nav_trip: "Earth to Moon", nav_data: "NASA Data",
       scn_title: "Guided Mission Scenarios", scn1: "Launch Delay (+5 days at Malapert)", scn2: "3 km Spatial Contrast", scn3: "Far Side Relay Need (Chang'e 6)",
-      c_set: "Sites", set_all: "All", set_artemis3: "Artemis III regions", set_landers: "Recent landers", set_apollo: "Apollo", set_mine: "My sites",
+      c_set: "Sites", set_all: "All", set_artemis3: "Artemis III regions", set_landers: "Recent landers", set_apollo: "Apollo", set_mine: "My sites", set_contrast: "3 km contrast pairs",
       c_start: "Start (UTC)", c_days: "Period", c_margin: "Horizon margin", c_height: "Point height", c_dsn: "DSN min. elevation", c_return: "Return window ≥",
       map_title: "Map", map_polar: "South polar", map_global: "Whole Moon", map_earthline: "Earth on horizon",
       map_note: "Map shading: analytic model on a smooth sphere (no terrain). Site colours use the active data source and LOLA terrain when available.",
@@ -34,7 +34,7 @@
       foot_ai: "Built for the NASA Space Apps Challenge 2026. Code and texts written with AI assistance and reviewed by the team (see README). Not an official NASA product.",
       src_horizons: "JPL Horizons · live", src_fallback: "Analytic · Horizons unavailable", src_bundle: "Horizons · precomputed {d}", src_analytic: "Analytic model · browser",
       src_mixed: " (+ custom points analytic)", loading: "Loading…",
-      p_coords: "Coordinates", p_source: "Position source", cs_verified: "verified", cs_pending_usgs: "pending (USGS)", cs_approximate: "approximate", cs_user: "user input",
+      p_coords: "Coordinates", p_source: "Position source", cs_verified: "verified", cs_pending_usgs: "pending (USGS)", cs_approximate: "approximate", cs_user: "user input", cs_derived: "from LOLA DEM",
       k_sun: "Sun el / az", k_earth: "Earth el / az", k_sunset: "Sunset in", k_sunrise: "Sunrise in", k_earthset: "Earthset in", k_earthrise: "Earthrise in",
       k_nextideal: "Next ideal window", k_night: "Longest night", k_nodte: "Longest no-DTE", k_sunpct: "Sun", k_dtepct: "DTE", k_idealpct: "Ideal",
       now: "now", none_in_period: "none in period", beyond: "beyond period",
@@ -51,15 +51,26 @@
       heat_info: "{s} · landing {d}: {p}% of {m} d with Sun + DTE", heat_na: "mission would end after the loaded period",
       mission: "mission", pending_scn: "This scenario needs the official USGS coordinates for {s}, which are not loaded yet (stage 4).",
       s1_title: "Launch delay: +5 days at Malapert", s1_body: "Plan: land at {a} on {d0} for a {m}-day stay. A 5-day launch delay moves the arrival to {d1}. Below, the share of the stay with Sun and DTE together (from the active data source).",
-      s1_k0: "Original plan · {a}", s1_k1: "Delayed +5 d · {a}", s1_k2: "Alternative · {b}", s1_end: "Lesson: a delay changes the arrival date, and with it which site is lit. The three cases are now pinned below for comparison.",
+      s1_k0: "Original plan · {a}", s1_k1: "Delayed +5 d · {a}", s1_k2: "Alternative · {b}",
+      s1_rescue: "Switching to {b} recovers {p} percentage points of Sun + DTE time.",
+      s1_legend: "Big number: share of the stay with Sun and DTE together. ☉ = with Sun, ⊕ = with direct-to-Earth contact.",
+      s1_dtelimit: "{b} keeps more sunlight ({s2}% vs {s1}%) but not Earth contact ({d2}% vs {d1}%): mid-stay the sub-Earth latitude is {lat}°, so libration tips Earth toward or below the horizon for the whole south-polar region, and the terrain toward Earth decides who loses it first. Energy and communication point to different answers: this stay needs a relay or a later date.",
+      s1_other: "{b} does not help on this date, but {c} does ({p}%).",
+      s1_stay: "No Artemis III region beats staying at Malapert for this delayed arrival; {b} does not help.",
+      s1_search: "How the date was chosen: the app scanned every landing day in the loaded period for the one where a 5-day delay hurts Malapert most and Mons Mouton recovers most ({m}-day stay).",
+      s1_search_none: "How the date was chosen: no day in the loaded period has both a large Malapert loss and a Mons Mouton recovery, so the app shows the day with the largest Malapert loss ({m}-day stay). Try a longer period.", s1_end: "A delay changes the arrival date, and with it which site is lit. The cases are pinned below for comparison.",
       s3_title: "Far side: sunlight without Earth", s3_body: "{s} is on the far side. Over this period it gets {sun}% sunlight — a normal lunar day/night cycle — but {dte} hours of direct-to-Earth contact: Earth never rises there. Chang'e 6 talked to Earth through the Queqiao-2 relay satellite.",
       s3_k0: "Sunlight", s3_k1: "DTE hours", s3_k2: "Longest night",
-      s2_title: "3 km spatial contrast", pair_wait: "<b>Ridge vs. depression (stage 4):</b> a pair of points a few km apart, with LOLA terrain, will appear here once the masks are generated.",
+      s2_title: "3 km spatial contrast: same region, opposite fates",
+      s2_body: "Two points {km} km apart in {r}, both on real LOLA terrain. Near the pole the Sun stays within ~1–2° of the horizon, so a mountain 20 km away decides everything: the ridge looks over the surrounding terrain, the hollow sits below its own walls.",
+      pair_cols: "Sunlight · longest night · DTE hours", pair_src: "Points selected from the LOLA 80 m DEM (NASA PGDA) by scripts/find_contrast_pair.py: highest point near the USGS region centre, and the lowest point 2.5–3.5 km away. Results: this app's model over the loaded period.",
+      ridge: "Ridge", hollow: "Hollow",
+      pair_wait: "<b>Ridge vs. depression (stage 4):</b> a pair of points a few km apart, with LOLA terrain, will appear here once the masks are generated.",
     },
     pt: {
       tagline: "Janelas de Sol e Terra para locais de pouso na Lua", nav_polar: "Janela Polar", nav_trip: "Da Terra à Lua", nav_data: "Dados da NASA",
       scn_title: "Cenários guiados de missão", scn1: "Atraso no lançamento (+5 dias em Malapert)", scn2: "Contraste a 3 km", scn3: "Lado oculto precisa de relé (Chang'e 6)",
-      c_set: "Locais", set_all: "Todos", set_artemis3: "Regiões Artemis III", set_landers: "Pousos recentes", set_apollo: "Apollo", set_mine: "Meus locais",
+      c_set: "Locais", set_all: "Todos", set_artemis3: "Regiões Artemis III", set_landers: "Pousos recentes", set_apollo: "Apollo", set_mine: "Meus locais", set_contrast: "Pares de contraste a 3 km",
       c_start: "Início (UTC)", c_days: "Período", c_margin: "Margem do horizonte", c_height: "Altura do ponto", c_dsn: "Elevação mín. DSN", c_return: "Janela de volta ≥",
       map_title: "Mapa", map_polar: "Polo sul", map_global: "Lua inteira", map_earthline: "Terra no horizonte",
       map_note: "Sombreamento do mapa: modelo analítico numa esfera lisa (sem relevo). As cores dos locais usam a fonte de dados ativa e o relevo LOLA quando disponível.",
@@ -76,7 +87,7 @@
       foot_ai: "Feito para o NASA Space Apps Challenge 2026. Código e textos escritos com ajuda de IA e revisados pela equipe (ver README). Não é um produto oficial da NASA.",
       src_horizons: "JPL Horizons · ao vivo", src_fallback: "Analítico · Horizons indisponível", src_bundle: "Horizons · pré-calculado {d}", src_analytic: "Modelo analítico · navegador",
       src_mixed: " (+ pontos próprios analíticos)", loading: "Carregando…",
-      p_coords: "Coordenadas", p_source: "Fonte da posição", cs_verified: "conferida", cs_pending_usgs: "pendente (USGS)", cs_approximate: "aproximada", cs_user: "digitada",
+      p_coords: "Coordenadas", p_source: "Fonte da posição", cs_verified: "conferida", cs_pending_usgs: "pendente (USGS)", cs_approximate: "aproximada", cs_user: "digitada", cs_derived: "do DEM LOLA",
       k_sun: "Sol el / az", k_earth: "Terra el / az", k_sunset: "Pôr do Sol em", k_sunrise: "Nascer do Sol em", k_earthset: "Pôr da Terra em", k_earthrise: "Nascer da Terra em",
       k_nextideal: "Próxima janela ideal", k_night: "Noite mais longa", k_nodte: "Maior tempo sem DTE", k_sunpct: "Sol", k_dtepct: "DTE", k_idealpct: "Ideal",
       now: "agora", none_in_period: "nenhuma no período", beyond: "além do período",
@@ -93,10 +104,21 @@
       heat_info: "{s} · pouso {d}: {p}% de {m} d com Sol + DTE", heat_na: "a missão terminaria depois do período carregado",
       mission: "missão", pending_scn: "Este cenário precisa das coordenadas oficiais do USGS para {s}, que ainda não foram carregadas (etapa 4).",
       s1_title: "Atraso no lançamento: +5 dias em Malapert", s1_body: "Plano: pousar em {a} em {d0} para {m} dias de estadia. Um atraso de 5 dias no lançamento leva a chegada para {d1}. Abaixo, a fração da estadia com Sol e DTE juntos (fonte de dados ativa).",
-      s1_k0: "Plano original · {a}", s1_k1: "Atraso +5 d · {a}", s1_k2: "Alternativa · {b}", s1_end: "Lição: o atraso muda a data de chegada, e com ela qual local está iluminado. Os três casos foram fixados abaixo para comparar.",
+      s1_k0: "Plano original · {a}", s1_k1: "Atraso +5 d · {a}", s1_k2: "Alternativa · {b}",
+      s1_rescue: "Trocar para {b} recupera {p} pontos percentuais de tempo com Sol + DTE.",
+      s1_legend: "Número grande: fração da estadia com Sol e DTE juntos. ☉ = com Sol, ⊕ = com contato direto com a Terra.",
+      s1_dtelimit: "{b} mantém mais luz ({s2}% contra {s1}%) mas não o contato com a Terra ({d2}% contra {d1}%): no meio da estadia a latitude subterrestre é {lat}°, então a libração leva a Terra para perto ou abaixo do horizonte em toda a região do polo sul, e o relevo na direção da Terra decide quem a perde primeiro. Energia e comunicação apontam respostas diferentes: esta estadia precisa de um relé ou de outra data.",
+      s1_other: "{b} não ajuda nesta data, mas {c} ajuda ({p}%).",
+      s1_stay: "Nenhuma região Artemis III supera ficar em Malapert nesta chegada atrasada; {b} não ajuda.",
+      s1_search: "Como a data foi escolhida: o app percorreu todos os dias de pouso do período carregado e pegou aquele em que um atraso de 5 dias mais prejudica Malapert e Mons Mouton mais recupera (estadia de {m} dias).",
+      s1_search_none: "Como a data foi escolhida: nenhum dia do período tem ao mesmo tempo grande perda em Malapert e recuperação em Mons Mouton, então o app mostra o dia de maior perda em Malapert (estadia de {m} dias). Tente um período maior.", s1_end: "O atraso muda a data de chegada, e com ela qual local está iluminado. Os casos foram fixados abaixo para comparar.",
       s3_title: "Lado oculto: Sol sem Terra", s3_body: "{s} fica no lado oculto. Neste período recebe {sun}% de luz do Sol — o ciclo normal de dia e noite lunar — mas {dte} horas de contato direto com a Terra: a Terra nunca nasce lá. O Chang'e 6 falou com a Terra pelo satélite relé Queqiao-2.",
       s3_k0: "Luz do Sol", s3_k1: "Horas de DTE", s3_k2: "Noite mais longa",
-      s2_title: "Contraste a 3 km", pair_wait: "<b>Crista × depressão (etapa 4):</b> um par de pontos a poucos km um do outro, com relevo LOLA, aparece aqui quando as máscaras forem geradas.",
+      s2_title: "Contraste a 3 km: mesma região, destinos opostos",
+      s2_body: "Dois pontos a {km} km um do outro em {r}, ambos sobre o relevo real do LOLA. Perto do polo o Sol fica a ~1–2° do horizonte, então uma montanha a 20 km decide tudo: a crista enxerga por cima do relevo em volta, a depressão fica abaixo das próprias paredes.",
+      pair_cols: "Luz do Sol · noite mais longa · horas de DTE", pair_src: "Pontos escolhidos no DEM LOLA de 80 m (NASA PGDA) por scripts/find_contrast_pair.py: ponto mais alto perto do centro da região do USGS e o ponto mais baixo a 2,5–3,5 km dele. Resultados: modelo deste app no período carregado.",
+      ridge: "Crista", hollow: "Depressão",
+      pair_wait: "<b>Crista × depressão (etapa 4):</b> um par de pontos a poucos km um do outro, com relevo LOLA, aparece aqui quando as máscaras forem geradas.",
     },
   };
   const MONTHS = { en: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], pt: ["jan","fev","mar","abr","mai","jun","jul","ago","set","out","nov","dez"] };
@@ -671,33 +693,65 @@
       const a = siteById("a3-malapert-massif"), b = siteById("a3-mons-mouton");
       if (!ready(a) || !ready(b)) { scnBox(`<h3>${t("s1_title")}</h3><p>${t("pending_scn", { s: [a, b].filter((x) => !ready(x)).map((x) => esc(x ? x.name : "?")).join(", ") })}</p>`); return; }
       const m = S.missionDays, nDays = Math.round(D.times.length * stepH() / 24);
-      let bestD = 0, bestDrop = -Infinity;
+      // Transparent search over the loaded period: the landing day where a 5-day delay
+      // hurts Malapert most AND Mons Mouton recovers most (score = min of both gains).
+      let bestD = -1, bestScore = -Infinity, dropD = 0, bestDrop = -Infinity;
       for (let d = 0; d + 5 + m <= nDays; d++) {
-        const w0 = windowStats(a.id, D.times[0] + d * DAY, m), w1 = windowStats(a.id, D.times[0] + (d + 5) * DAY, m);
-        if (w0 && w1 && w0.frac - w1.frac > bestDrop) { bestDrop = w0.frac - w1.frac; bestD = d; }
+        const w0 = windowStats(a.id, D.times[0] + d * DAY, m), w1 = windowStats(a.id, D.times[0] + (d + 5) * DAY, m), w2 = windowStats(b.id, D.times[0] + (d + 5) * DAY, m);
+        if (!w0 || !w1 || !w2) continue;
+        const sc = Math.min(w0.frac - w1.frac, w2.frac - w1.frac);
+        if (sc > bestScore) { bestScore = sc; bestD = d; }
+        if (w0.frac - w1.frac > bestDrop) { bestDrop = w0.frac - w1.frac; dropD = d; }
       }
-      const t0 = D.times[0] + bestD * DAY, t1 = t0 + 5 * DAY;
+      const found = bestScore > 0.05, d0 = found ? bestD : dropD;
+      const t0 = D.times[0] + d0 * DAY, t1 = t0 + 5 * DAY;
       const w0 = windowStats(a.id, t0, m), w1 = windowStats(a.id, t1, m), w2 = windowStats(b.id, t1, m);
       if (!w0 || !w1 || !w2) { scnBox(`<h3>${t("s1_title")}</h3><p>${t("heat_na")}</p>`); return; }
-      S.pins = [{ id: a.id, t0, m }, { id: a.id, t0: t1, m }, { id: b.id, t0: t1, m }]; store.set("pins", S.pins);
+      const alts = allSites().filter((x) => x.set === "artemis3" && x.id !== a.id && ready(x)).map((x) => ({ x, w: windowStats(x.id, t1, m) })).filter((o) => o.w).sort((p, q) => q.w.frac - p.w.frac);
+      const best = alts[0];
+      S.pins = [{ id: a.id, t0, m }, { id: a.id, t0: t1, m }, { id: b.id, t0: t1, m }];
+      if (best && best.x.id !== b.id) S.pins.push({ id: best.x.id, t0: t1, m });
+      store.set("pins", S.pins);
       S.siteId = a.id; S.cursor = Math.round((t1 - D.times[0]) / HOUR / stepH()); S.mission = { id: a.id, t0: t1, m };
-      scnBox(`<h3>${t("s1_title")}</h3><p>${t("s1_body", { a: esc(a.name), d0: fmtT(t0), d1: fmtT(t1), m })}</p>
-        <div class="scn-kpis">${kpi(t("s1_k0", { a: esc(a.name) }), nf(w0.frac * 100, 0) + "%", "good")}${kpi(t("s1_k1", { a: esc(a.name) }), nf(w1.frac * 100, 0) + "%", w1.frac < w0.frac ? "bad" : "")}${kpi(t("s1_k2", { b: esc(b.name) }), nf(w2.frac * 100, 0) + "%", w2.frac > w1.frac ? "good" : "")}</div><p>${t("s1_end")}</p>`);
+      const hrs = m * 24, pc = (h) => nf(100 * h / hrs, 0);
+      const midState = E.moonState(t1 + m * DAY / 2);
+      let lesson;
+      if (w2.frac > w1.frac + 0.05) lesson = t("s1_rescue", { b: esc(b.name), p: nf((w2.frac - w1.frac) * 100, 0) });
+      else if (w2.sun > w1.sun + 1 && w2.dte <= w1.dte + 1)
+        lesson = t("s1_dtelimit", { b: esc(b.name), s2: pc(w2.sun), s1: pc(w1.sun), d2: pc(w2.dte), d1: pc(w1.dte), lat: nf(midState.subearth_lat, 1) });
+      else if (best && best.w.frac > w1.frac + 0.05) lesson = t("s1_other", { b: esc(b.name), c: esc(best.x.name), p: nf(best.w.frac * 100, 0) });
+      else lesson = t("s1_stay", { b: esc(b.name) });
+      const kv = (w) => `${nf(w.frac * 100, 0)}%<small class="mono"> · ☉ ${pc(w.sun)}% · ⊕ ${pc(w.dte)}%</small>`;
+      scnBox(`<h3>${t("s1_title")}</h3><p>${t("s1_body", { a: esc(a.name), d0: fmtT(t0), d1: fmtT(t1), m: nf(m, 1) })}</p>
+        <div class="scn-kpis">${kpi(t("s1_k0", { a: esc(a.name) }), kv(w0), "good")}${kpi(t("s1_k1", { a: esc(a.name) }), kv(w1), w1.frac < w0.frac ? "bad" : "")}${kpi(t("s1_k2", { b: esc(b.name) }), kv(w2), w2.frac > w1.frac ? "good" : "bad")}</div>
+        <p class="small">${t("s1_legend")}</p><p><b>${lesson}</b></p><p class="note">${t(found ? "s1_search" : "s1_search_none", { m: nf(m, 1) })}</p><p>${t("s1_end")}</p>`);
     } else if (name === "contrast") {
-      const pair = allSites().filter((s) => s.pair && ready(s));
-      if (pair.length < 2) { scnBox(`<h3>${t("s2_title")}</h3><p>${t("pair_wait")}</p>`); return; }
-      S.siteId = pair[0].id; S.cursor = 0; S.mission = null;
-      scnBox(`<h3>${t("s2_title")}</h3>` + pairHTML(pair));
+      const groups = pairGroups();
+      if (!groups.length) { scnBox(`<h3>${t("s2_title")}</h3><p>${t("pair_wait")}</p>`); return; }
+      S.set = "contrast"; $("#cSet").value = "contrast";
+      S.siteId = groups[0][1].id; S.cursor = 0; S.mission = null;
+      scnBox(`<h3>${t("s2_title")}</h3>` + pairHTML(groups[0]));
     }
     writeURL(); renderAll();
     $("#scnSummary").scrollIntoView({ block: "nearest" });
   }
-  function pairHTML(pair) {
-    return `<div class="scn-kpis">${pair.map((s) => { const sm = EV[s.id].summ; return kpi(esc(s.name), `${nf(sm.sun_pct, 0)}% · ${fmtDur(sm.longest_night_hours)} · DTE ${nf(sm.dte_pct, 0)}%`); }).join("")}</div>`;
+  /** [[crest, hollow], ...] for every complete contrast pair that has data. */
+  function pairGroups() {
+    const by = {};
+    for (const s of allSites()) if (s.pair && ready(s)) (by[s.pair] = by[s.pair] || {})[s.pair_role] = s;
+    return Object.values(by).filter((g) => g.crest && g.hollow).map((g) => [g.crest, g.hollow]);
+  }
+  function pairHTML([a, b]) {
+    const region = a.mission.replace(/^.* in /, "");
+    const k = (s, role) => { const sm = EV[s.id].summ;
+      return `<div class="scn-kpi ${role === "crest" ? "good" : "bad"}"><span class="small">${t(role === "crest" ? "ridge" : "hollow")} · ${Math.abs(s.lat).toFixed(3)}°S ${Math.abs(s.lon).toFixed(3)}°${s.lon < 0 ? "W" : "E"} · ${nf(s.surface_height_m, 0)} m</span>
+        <b>${nf(sm.sun_pct, 0)}% · ${fmtDur(sm.longest_night_hours)} · ${nf(sm.dte_hours, 0)} h</b></div>`; };
+    return `<p>${t("s2_body", { km: nf(a.pair_distance_km, 1), r: esc(region) })}</p><p class="small">${t("pair_cols")}</p>
+      <div class="scn-kpis">${k(a, "crest")}${k(b, "hollow")}</div><p class="note">${t("pair_src")}</p>`;
   }
   function renderPair() {
-    const pair = allSites().filter((s) => s.pair && ready(s));
-    $("#pairBox").innerHTML = pair.length >= 2 ? pairHTML(pair) : `<p class="note">${t("pair_wait")}</p>`;
+    const g = pairGroups();
+    $("#pairBox").innerHTML = g.length ? g.map((p) => `<h3>${esc(p[0].mission)}</h3>` + pairHTML(p)).join("") : `<p class="note">${t("pair_wait")}</p>`;
   }
 
   // ------------------------------------------------------------------ render all / i18n

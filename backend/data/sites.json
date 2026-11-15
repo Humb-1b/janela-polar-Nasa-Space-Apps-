@@ -6,43 +6,73 @@
    "id": "a3-peak-near-cabeus-b",
    "name": "Peak near Cabeus B",
    "set": "artemis3",
-   "lat": null,
-   "lon": null,
-   "coord_status": "pending_usgs",
-   "coord_kind": "region centre (from USGS 1 km grid)",
+   "lat": -83.65136,
+   "lon": -68.72626,
+   "coord_status": "verified",
+   "coord_kind": "region centre: mean of the 441 USGS 1 km LGRS grid cells",
    "mission": "Artemis III candidate region (NASA, 2024-10-28)",
    "source": {
     "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
     "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
-   }
+   },
+   "region_bbox": {
+    "west": -72.6632,
+    "east": -64.5367,
+    "north": -83.199,
+    "south": -84.0978
+   },
+   "region_extent_km": [
+    21.0,
+    21.0
+   ]
   },
   {
    "id": "a3-haworth",
    "name": "Haworth",
    "set": "artemis3",
-   "lat": null,
-   "lon": null,
-   "coord_status": "pending_usgs",
-   "coord_kind": "region centre (from USGS 1 km grid)",
+   "lat": -86.76611,
+   "lon": -22.61986,
+   "coord_status": "verified",
+   "coord_kind": "region centre: mean of the 930 USGS 1 km LGRS grid cells",
    "mission": "Artemis III candidate region (NASA, 2024-10-28)",
    "source": {
     "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
     "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
-   }
+   },
+   "region_bbox": {
+    "west": -35.2476,
+    "east": -11.8336,
+    "north": -86.0993,
+    "south": -87.4073
+   },
+   "region_extent_km": [
+    31.0,
+    30.0
+   ]
   },
   {
    "id": "a3-malapert-massif",
    "name": "Malapert Massif",
    "set": "artemis3",
-   "lat": null,
-   "lon": null,
-   "coord_status": "pending_usgs",
-   "coord_kind": "region centre (from USGS 1 km grid)",
+   "lat": -85.9872,
+   "lon": -0.23676,
+   "coord_status": "verified",
+   "coord_kind": "region centre: mean of the 462 USGS 1 km LGRS grid cells",
    "mission": "Artemis III candidate region (NASA, 2024-10-28)",
    "source": {
     "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
     "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
-   }
+   },
+   "region_bbox": {
+    "west": -5.7106,
+    "east": 5.1944,
+    "north": -85.6076,
+    "south": -86.3518
+   },
+   "region_extent_km": [
+    21.0,
+    22.0
+   ]
   },
   {
    "id": "a3-mons-mouton-plateau",
@@ -62,71 +92,121 @@
    "id": "a3-mons-mouton",
    "name": "Mons Mouton",
    "set": "artemis3",
-   "lat": null,
-   "lon": null,
-   "coord_status": "pending_usgs",
-   "coord_kind": "region centre (from USGS 1 km grid)",
+   "lat": -85.4218,
+   "lon": 31.67547,
+   "coord_status": "verified",
+   "coord_kind": "region centre: mean of the 289 USGS 1 km LGRS grid cells",
    "mission": "Artemis III candidate region (NASA, 2024-10-28)",
    "source": {
     "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
     "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
-   }
+   },
+   "region_bbox": {
+    "west": 26.9277,
+    "east": 36.6168,
+    "north": -85.0335,
+    "south": -85.8083
+   },
+   "region_extent_km": [
+    17.0,
+    17.0
+   ]
   },
   {
    "id": "a3-nobile-rim-1",
    "name": "Nobile Rim 1",
    "set": "artemis3",
-   "lat": null,
-   "lon": null,
-   "coord_status": "pending_usgs",
-   "coord_kind": "region centre (from USGS 1 km grid)",
+   "lat": -85.43381,
+   "lon": 37.32759,
+   "coord_status": "verified",
+   "coord_kind": "region centre: mean of the 441 USGS 1 km LGRS grid cells",
    "mission": "Artemis III candidate region (NASA, 2024-10-28)",
    "source": {
     "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
     "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
-   }
+   },
+   "region_bbox": {
+    "west": 31.3135,
+    "east": 43.516,
+    "north": -84.946,
+    "south": -85.9208
+   },
+   "region_extent_km": [
+    21.0,
+    21.0
+   ]
   },
   {
    "id": "a3-nobile-rim-2",
    "name": "Nobile Rim 2",
    "set": "artemis3",
-   "lat": null,
-   "lon": null,
-   "coord_status": "pending_usgs",
-   "coord_kind": "region centre (from USGS 1 km grid)",
+   "lat": -83.95446,
+   "lon": 58.79381,
+   "coord_status": "verified",
+   "coord_kind": "region centre: mean of the 420 USGS 1 km LGRS grid cells",
    "mission": "Artemis III candidate region (NASA, 2024-10-28)",
    "source": {
     "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
     "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
-   }
+   },
+   "region_bbox": {
+    "west": 54.2771,
+    "east": 63.1595,
+    "north": -83.4904,
+    "south": -84.4161
+   },
+   "region_extent_km": [
+    20.0,
+    21.0
+   ]
   },
   {
    "id": "a3-de-gerlache-rim-2",
    "name": "de Gerlache Rim 2",
    "set": "artemis3",
-   "lat": null,
-   "lon": null,
-   "coord_status": "pending_usgs",
-   "coord_kind": "region centre (from USGS 1 km grid)",
+   "lat": -88.22634,
+   "lon": -65.11259,
+   "coord_status": "verified",
+   "coord_kind": "region centre: mean of the 441 USGS 1 km LGRS grid cells",
    "mission": "Artemis III candidate region (NASA, 2024-10-28)",
    "source": {
     "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
     "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
-   }
+   },
+   "region_bbox": {
+    "west": -78.5034,
+    "east": -49.0283,
+    "north": -87.7575,
+    "south": -88.678
+   },
+   "region_extent_km": [
+    21.0,
+    21.0
+   ]
   },
   {
    "id": "a3-slater-plain",
    "name": "Slater Plain",
    "set": "artemis3",
-   "lat": null,
-   "lon": null,
-   "coord_status": "pending_usgs",
-   "coord_kind": "region centre (from USGS 1 km grid)",
+   "lat": -87.16972,
+   "lon": 125.45962,
+   "coord_status": "verified",
+   "coord_kind": "region centre: mean of the 441 USGS 1 km LGRS grid cells",
    "mission": "Artemis III candidate region (NASA, 2024-10-28)",
    "source": {
     "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
     "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
-   }
+   },
+   "region_bbox": {
+    "west": 115.9892,
+    "east": 135.4815,
+    "north": -86.6832,
+    "south": -87.6539
+   },
+   "region_extent_km": [
+    21.0,
+    21.0
+   ]
   },
   {
    "id": "im1",
@@ -298,6 +378,78 @@
     "checked": "2026-11-14"
    },
    "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "pair-dg2-crest",
+   "name": "de Gerlache Rim 2 · ridge",
+   "set": "contrast",
+   "lat": -88.58643,
+   "lon": -67.91067,
+   "coord_status": "derived",
+   "pair": "dg2",
+   "pair_role": "crest",
+   "pair_distance_km": 3.49,
+   "surface_height_m": 1763.8,
+   "coord_kind": "highest DEM point within 10 km of the region centre",
+   "mission": "3 km contrast pair in de Gerlache Rim 2",
+   "source": {
+    "name": "Selected from the LOLA 80 m DEM (LDEM_80S_80MPP_ADJ.tiff, NASA PGDA product 90, Barker et al. 2023) by scripts/find_contrast_pair.py inside the USGS de Gerlache Rim 2 region",
+    "url": "https://pgda.gsfc.nasa.gov/products/90"
+   }
+  },
+  {
+   "id": "pair-dg2-hollow",
+   "name": "de Gerlache Rim 2 · hollow",
+   "set": "contrast",
+   "lat": -88.58574,
+   "lon": -72.57903,
+   "coord_status": "derived",
+   "pair": "dg2",
+   "pair_role": "hollow",
+   "pair_distance_km": 3.49,
+   "surface_height_m": 397.9,
+   "coord_kind": "lowest DEM point 2.5-3.5 km from the ridge point",
+   "mission": "3 km contrast pair in de Gerlache Rim 2",
+   "source": {
+    "name": "Selected from the LOLA 80 m DEM (LDEM_80S_80MPP_ADJ.tiff, NASA PGDA product 90, Barker et al. 2023) by scripts/find_contrast_pair.py inside the USGS de Gerlache Rim 2 region",
+    "url": "https://pgda.gsfc.nasa.gov/products/90"
+   }
+  },
+  {
+   "id": "pair-nr2-crest",
+   "name": "Nobile Rim 2 · ridge",
+   "set": "contrast",
+   "lat": -84.08204,
+   "lon": 54.88359,
+   "coord_status": "derived",
+   "pair": "nr2",
+   "pair_role": "crest",
+   "pair_distance_km": 3.49,
+   "surface_height_m": 1817.5,
+   "coord_kind": "highest DEM point within 10 km of the region centre",
+   "mission": "3 km contrast pair in Nobile Rim 2",
+   "source": {
+    "name": "Selected from the LOLA 80 m DEM (LDEM_80S_80MPP_ADJ.tiff, NASA PGDA product 90, Barker et al. 2023) by scripts/find_contrast_pair.py inside the USGS Nobile Rim 2 region",
+    "url": "https://pgda.gsfc.nasa.gov/products/90"
+   }
+  },
+  {
+   "id": "pair-nr2-hollow",
+   "name": "Nobile Rim 2 · hollow",
+   "set": "contrast",
+   "lat": -84.18738,
+   "lon": 55.32621,
+   "coord_status": "derived",
+   "pair": "nr2",
+   "pair_role": "hollow",
+   "pair_distance_km": 3.49,
+   "surface_height_m": 351.5,
+   "coord_kind": "lowest DEM point 2.5-3.5 km from the ridge point",
+   "mission": "3 km contrast pair in Nobile Rim 2",
+   "source": {
+    "name": "Selected from the LOLA 80 m DEM (LDEM_80S_80MPP_ADJ.tiff, NASA PGDA product 90, Barker et al. 2023) by scripts/find_contrast_pair.py inside the USGS Nobile Rim 2 region",
+    "url": "https://pgda.gsfc.nasa.gov/products/90"
+   }
   }
  ]
 }

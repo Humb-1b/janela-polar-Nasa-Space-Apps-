@@ -36,7 +36,7 @@ def depression_deg(height_m: float, radius_km: float = MOON_RADIUS_KM) -> float:
 def mask_at(mask, az: float) -> float:
     """Terrain horizon elevation at azimuth ``az`` from a 360-value mask (1 deg
     steps, index 0 = north, clockwise), linearly interpolated, wrap-around."""
-    if not mask:
+    if mask is None or len(mask) == 0:
         return 0.0
     n = len(mask)
     x = (az % 360.0) * n / 360.0

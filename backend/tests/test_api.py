@@ -32,10 +32,15 @@ Q = "start=2026-11-15&days=3"
 def test_sites_lists_all_and_flags_pending(client):
     r = client.get("/api/sites").get_json()["sites"]
     ids = {s["id"]: s for s in r}
-    assert len(r) == 19
+    assert len(r) == 23
     assert ids["im2"]["lat"] == -84.7906 and ids["im2"]["has_coords"]
     a3 = [s for s in r if s["set"] == "artemis3"]
-    assert len(a3) == 9 and all(not s["has_coords"] and s["coord_status"] == "pending_usgs" for s in a3)
+    assert len(a3) == 9
+    pending = [s["id"] for s in a3 if not s["has_coords"]]
+    assert pending == ["a3-mons-mouton-plateau"]
+    assert all(s["coord_status"] == "verified" and s["has_horizon_mask"] for s in a3 if s["has_coords"])
+    pairs = [s for s in r if s["set"] == "contrast"]
+    assert len(pairs) == 4 and all(s["has_horizon_mask"] for s in pairs)
 
 
 def test_auto_falls_back_and_is_not_memory_cached(client, horizons_down):
@@ -115,14 +120,14 @@ def test_point_and_validation(client):
 
 def test_unknown_and_pending_sites(client):
     assert client.get(f"/api/windows?site=nope&{Q}").status_code == 404
-    assert client.get(f"/api/windows?site=a3-haworth&{Q}&mode=analytic").status_code == 400
+    assert client.get(f"/api/windows?site=a3-mons-mouton-plateau&{Q}&mode=analytic").status_code == 400
 
 
 def test_compare(client):
-    j = client.get(f"/api/compare?sites=im1,ce6,a3-haworth&{Q}&mode=analytic").get_json()
+    j = client.get(f"/api/compare?sites=im1,ce6,a3-mons-mouton-plateau&{Q}&mode=analytic").get_json()
     rows = {r["id"]: r for r in j["rows"]}
     assert rows["ce6"]["dte_pct"] == 0
-    assert "error" in rows["a3-haworth"]
+    assert "error" in rows["a3-mons-mouton-plateau"]
     assert client.get(f"/api/compare?{Q}").status_code == 400
 
 
@@ -140,7 +145,7 @@ def test_bundle_has_series_dsn_and_masks(client, monkeypatch, tmp_path):
     assert len(j["times"]) == 72 and set(j["dsn"]) == {"goldstone", "madrid", "canberra"}
     by = {s["id"]: s for s in j["sites"]}
     assert len(by) == 7 and by["im1"]["has_horizon_mask"] and len(by["im1"]["horizon_mask"]) == 360
-    assert by["ch3"]["horizon_mask"] is None
+    assert by["ce4"]["horizon_mask"] is None
     assert len(by["ce4"]["series"]["sun_el"]) == 72
 
 
@@ -157,3 +162,12 @@ def test_static_sites_in_sync_with_sites_json():
     assert fresh == stored, "run: python scripts/precompute.py --sites-only"
     js = (root / "frontend" / "js" / "sites_static.js").read_text(encoding="utf-8")
     assert json.loads(js.split("=", 1)[1].strip().rstrip(";")) == stored
+
+
+def test_terrain_changes_results_for_contrast_pair(client):
+    """Ridge vs hollow 3.5 km apart: the LOLA masks must make a large difference."""
+    q = "start=2027-01-01&days=60&mode=analytic"
+    a = client.get(f"/api/windows?site=pair-dg2-crest&{q}").get_json()["summary"]
+    b = client.get(f"/api/windows?site=pair-dg2-hollow&{q}").get_json()["summary"]
+    assert a["sun_pct"] > b["sun_pct"] + 25
+    assert b["longest_night_hours"] > a["longest_night_hours"]

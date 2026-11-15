@@ -9,7 +9,7 @@ from functools import lru_cache
 
 from . import config
 
-SETS = ("artemis3", "landers", "apollo")
+SETS = ("artemis3", "landers", "apollo", "contrast")
 
 
 class UnknownSite(KeyError):

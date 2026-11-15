@@ -57,6 +57,7 @@ a { color: var(--earth); }
 .scn-kpis { display: flex; flex-wrap: wrap; gap: .5rem; margin: .5rem 0; }
 .scn-kpi { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: .35rem .6rem; min-width: 9rem; }
 .scn-kpi b { display: block; font: 600 1.2rem "IBM Plex Mono", monospace; }
+.scn-kpi b small { font-size: .72rem; font-weight: 500; color: var(--muted); }
 .scn-kpi.good b { color: var(--ideal); } .scn-kpi.bad b { color: var(--danger); }
 
 .controls { display: flex; flex-wrap: wrap; gap: .6rem 1rem; padding: .7rem 1rem; border-bottom: 1px solid var(--line); background: var(--panel); }

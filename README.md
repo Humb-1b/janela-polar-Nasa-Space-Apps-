@@ -1,6 +1,6 @@
 # Janela Polar — NASA Space Apps Challenge 2026
 
-Work in progress (stage 3 of 8). Full README with sources and the "AI assistance" section comes in stage 8.
+Work in progress (stage 4 of 8). Full README with sources and the "AI assistance" section comes in stage 8.
 
 Run tests:
 ```
@@ -41,3 +41,21 @@ Open `frontend/index.html` directly (analytic engine in the browser) or through 
 Data source order, shown in the badge: backend API → precomputed bundle (`frontend/data/`) → browser engine.
 URL parameters: `?site=<id>&start=YYYY-MM-DD&days=<n>&lang=en|pt`.
 After editing `backend/data/sites.json` run `python scripts/precompute.py --sites-only`.
+
+## Terrain and official coordinates (stage 4)
+
+* **Artemis III regions** — `scripts/sites_from_shapefiles.py` reads the USGS 1 km LGRS grid shapefiles
+  (McClernan 2024, doi:10.5066/P1MEQ6UK). Their `.prj` is a south polar stereographic projection on the
+  1737.4 km sphere with false easting/northing 500 km and scale factor 0.994 (USGS LPS), inverted in closed
+  form (pyproj is used and cross-checked when installed). Region centre = mean of the grid cell centres.
+  Check against the FGDC metadata: one axis of the metadata bounding box matches the grid exactly in every
+  region and the centre lies inside it. 8 of 9 regions loaded; **Mons Mouton Plateau pending** (file not yet provided).
+* **Horizon masks** — `scripts/horizon_mask_from_dem.py` casts rays every 1° to 150 km over the LOLA DEMs
+  `LDEM_80S_80MPP_ADJ` (80 m) and `LDEM_60S_240MPP_ADJ` (240 m) from NASA PGDA product 90
+  (Barker et al. 2023, doi:10.3847/PSJ/acf3e1); angle = atan((z − z0 − d²/2R)/d); observer 2 m above the surface.
+  Masks for all sites south of 60°S are in `backend/data/horizon_masks/` and embedded in `frontend/data/sites_static.json`.
+  Without rasterio the GeoTIFFs are read with tifffile + our own Deflate/floating-point-predictor decoder
+  (`scripts/dem_io.py`); the 80 m and 240 m DEMs agree within ~4 m at the test points.
+* **3 km contrast pairs** — `scripts/find_contrast_pair.py`: highest DEM point near the USGS region centre and the
+  lowest point 2.5–3.5 km away (de Gerlache Rim 2 and Nobile Rim 2). Chosen from the DEM, not from a published
+  illumination map; illumination numbers are this app's model.
