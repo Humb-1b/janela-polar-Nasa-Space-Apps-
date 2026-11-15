@@ -9,6 +9,6 @@ jobs:
         with: { python-version: "3.12" }
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
-      - run: pip install -r backend/requirements.txt pytest
+      - run: pip install -r backend/requirements.txt pytest numpy tifffile pyproj
       - run: cd backend && python -m pytest -q
       - run: node --test frontend/tests/*.test.mjs
