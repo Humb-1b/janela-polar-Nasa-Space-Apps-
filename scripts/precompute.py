@@ -49,19 +49,22 @@ def write_static_sites():
 
 
 def build_bundle(start: datetime, days: int, mode: str) -> dict:
+    from concurrent.futures import ThreadPoolExecutor
     p = {"start": start, "days": days, "mode": mode, "margin": 0.0, "height": 0.0, "dsn_min": 10.0, "return_hours": 8}
-    out, srcs, errs, dsn, times = [], [], [], None, None
-    for s in sites.select("all"):
-        ser = ephemeris.site_series(s["lat"], s["lon"], start, days, mode)
+    sel = sites.select("all")
+    # Horizons client caps concurrency at 2 itself; two workers keep it busy.
+    with ThreadPoolExecutor(max_workers=2) as ex:
+        series = list(ex.map(lambda s: ephemeris.site_series(s["lat"], s["lon"], start, days, mode), sel))
+    out, srcs, errs = [], [], []
+    for s, ser in zip(sel, series):
         srcs.append(ser["source"])
         if ser["error"]:
             errs.append(ser["error"])
-        dsn, times = dsn or ser["dsn"], times or ser["times"]
         out.append({**sites.public(s), "source": ser["source"], "horizon_mask": sites.load_mask(s["id"]),
                     "series": api._series_out(ser)})
     meta = api._meta(p, srcs, errs)
     meta["precomputed"] = True
-    return api._jsonable({"meta": meta, "times": times, "dsn": dsn, "sites": out})
+    return api._jsonable({"meta": meta, "times": series[0]["times"], "dsn": series[0]["dsn"], "sites": out})
 
 
 def main():
@@ -78,6 +81,9 @@ def main():
     now = datetime.now(timezone.utc)
     start = datetime.strptime(a.start, "%Y-%m-%d") if a.start else datetime(now.year, now.month, now.day)
     b = build_bundle(start, a.days, a.mode)
+    if a.mode == "horizons" and b["meta"]["sources"] != ["horizons"]:
+        print("not all sites came from Horizons; bundle NOT written:", b["meta"]["sources"])
+        return 1
     name = f"bundle-{start:%Y-%m-%d}-{a.days}d.json"
     (OUT / name).write_text(json.dumps(b, separators=(",", ":")), encoding="utf-8")
     man_p = OUT / "bundles.json"
@@ -89,9 +95,7 @@ def main():
         (OUT / old["file"]).unlink(missing_ok=True)
     man["bundles"] = man["bundles"][:a.keep]
     man_p.write_text(json.dumps(man, indent=1))
-    print(f"wrote {name}: sources={b['meta']['sources']}")
-    if a.mode == "horizons" and b["meta"]["sources"] != ["horizons"]:
-        return 1
+    print(f"wrote {name}: sources={b['meta']['sources']}, {len(b['sites'])} sites")
     return 0
 
 

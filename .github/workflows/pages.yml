@@ -1,0 +1,45 @@
+name: pages
+# Publishes frontend/ to GitHub Pages. Before that, builds the precomputed bundle
+# (30 days from today, UTC) from JPL Horizons, with LOLA horizon masks embedded.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 4 * * *"      # daily, 04:17 UTC
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r backend/requirements.txt
+      - name: Precompute Horizons bundle (30 d from today UTC)
+        id: pre
+        continue-on-error: true      # if Horizons is down the site still deploys (browser engine)
+        run: python scripts/precompute.py --days 30 --mode horizons
+      - name: Report
+        run: |
+          echo "precompute outcome: ${{ steps.pre.outcome }}"
+          ls -la frontend/data
+          test -f frontend/data/bundles.json && cat frontend/data/bundles.json || echo "no bundle: site will use the analytic engine"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: frontend }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

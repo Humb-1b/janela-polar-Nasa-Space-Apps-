@@ -209,6 +209,7 @@
   }
   async function tryAPI(signal) {
     if (!/^https?:$/.test(location.protocol)) throw new Error("no server");
+    if (/\.github\.io$/.test(location.hostname)) throw new Error("static host: no backend");  // avoid a 404 in the console
     const j = await fetchJSON(`api/bundle?start=${isoDate(S.start)}&days=${S.days}&mode=auto`, signal);
     const src = j.meta.sources.includes("analytic-fallback") ? "fallback" : "horizons";
     return fromBundle(j, src, "");
@@ -219,7 +220,9 @@
     const end = S.start + S.days * DAY;
     const b = man.bundles.find((e) => Date.parse(e.start + "T00:00:00Z") <= S.start && Date.parse(e.start + "T00:00:00Z") + e.days * DAY >= end);
     if (!b) throw new Error("no bundle covers the period");
-    const d = sliceData(fromBundle(await fetchJSON("data/" + b.file, signal), "bundle", b.generated_utc.slice(0, 10)), S.start, S.days);
+    const j = await fetchJSON("data/" + b.file, signal);
+    const src = j.meta.sources.length === 1 && j.meta.sources[0] === "horizons" ? "bundle" : "analytic";
+    const d = sliceData(fromBundle(j, src, b.generated_utc.slice(0, 10)), S.start, S.days);
     if (!d) throw new Error("bundle slice failed");
     return d;
   }
