@@ -1,0 +1,303 @@
+{
+ "version": 1,
+ "lon_convention": "east-positive, -180..180",
+ "sites": [
+  {
+   "id": "a3-peak-near-cabeus-b",
+   "name": "Peak near Cabeus B",
+   "set": "artemis3",
+   "lat": null,
+   "lon": null,
+   "coord_status": "pending_usgs",
+   "coord_kind": "region centre (from USGS 1 km grid)",
+   "mission": "Artemis III candidate region (NASA, 2024-10-28)",
+   "source": {
+    "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
+    "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
+   }
+  },
+  {
+   "id": "a3-haworth",
+   "name": "Haworth",
+   "set": "artemis3",
+   "lat": null,
+   "lon": null,
+   "coord_status": "pending_usgs",
+   "coord_kind": "region centre (from USGS 1 km grid)",
+   "mission": "Artemis III candidate region (NASA, 2024-10-28)",
+   "source": {
+    "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
+    "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
+   }
+  },
+  {
+   "id": "a3-malapert-massif",
+   "name": "Malapert Massif",
+   "set": "artemis3",
+   "lat": null,
+   "lon": null,
+   "coord_status": "pending_usgs",
+   "coord_kind": "region centre (from USGS 1 km grid)",
+   "mission": "Artemis III candidate region (NASA, 2024-10-28)",
+   "source": {
+    "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
+    "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
+   }
+  },
+  {
+   "id": "a3-mons-mouton-plateau",
+   "name": "Mons Mouton Plateau",
+   "set": "artemis3",
+   "lat": null,
+   "lon": null,
+   "coord_status": "pending_usgs",
+   "coord_kind": "region centre (from USGS 1 km grid)",
+   "mission": "Artemis III candidate region (NASA, 2024-10-28)",
+   "source": {
+    "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
+    "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
+   }
+  },
+  {
+   "id": "a3-mons-mouton",
+   "name": "Mons Mouton",
+   "set": "artemis3",
+   "lat": null,
+   "lon": null,
+   "coord_status": "pending_usgs",
+   "coord_kind": "region centre (from USGS 1 km grid)",
+   "mission": "Artemis III candidate region (NASA, 2024-10-28)",
+   "source": {
+    "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
+    "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
+   }
+  },
+  {
+   "id": "a3-nobile-rim-1",
+   "name": "Nobile Rim 1",
+   "set": "artemis3",
+   "lat": null,
+   "lon": null,
+   "coord_status": "pending_usgs",
+   "coord_kind": "region centre (from USGS 1 km grid)",
+   "mission": "Artemis III candidate region (NASA, 2024-10-28)",
+   "source": {
+    "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
+    "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
+   }
+  },
+  {
+   "id": "a3-nobile-rim-2",
+   "name": "Nobile Rim 2",
+   "set": "artemis3",
+   "lat": null,
+   "lon": null,
+   "coord_status": "pending_usgs",
+   "coord_kind": "region centre (from USGS 1 km grid)",
+   "mission": "Artemis III candidate region (NASA, 2024-10-28)",
+   "source": {
+    "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
+    "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
+   }
+  },
+  {
+   "id": "a3-de-gerlache-rim-2",
+   "name": "de Gerlache Rim 2",
+   "set": "artemis3",
+   "lat": null,
+   "lon": null,
+   "coord_status": "pending_usgs",
+   "coord_kind": "region centre (from USGS 1 km grid)",
+   "mission": "Artemis III candidate region (NASA, 2024-10-28)",
+   "source": {
+    "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
+    "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
+   }
+  },
+  {
+   "id": "a3-slater-plain",
+   "name": "Slater Plain",
+   "set": "artemis3",
+   "lat": null,
+   "lon": null,
+   "coord_status": "pending_usgs",
+   "coord_kind": "region centre (from USGS 1 km grid)",
+   "mission": "Artemis III candidate region (NASA, 2024-10-28)",
+   "source": {
+    "name": "McClernan, M.T., 2024, Down Selected Artemis III Candidate Landing Site Navigational Grids, USGS data release, doi:10.5066/P1MEQ6UK (regions sourced from LROC QuickMap)",
+    "url": "https://www.sciencebase.gov/catalog/item/671a6fa8d34efed5620f89f8"
+   }
+  },
+  {
+   "id": "im1",
+   "name": "IM-1 Odysseus",
+   "set": "landers",
+   "lat": -80.13,
+   "lon": 1.44,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "Intuitive Machines IM-1 (CLPS)",
+   "landing_date": "2024-02-22",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "im2",
+   "name": "IM-2 Athena (Mons Mouton)",
+   "set": "landers",
+   "lat": -84.7906,
+   "lon": 29.1957,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "Intuitive Machines IM-2 (CLPS)",
+   "landing_date": "2025-03-06",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "note": "NSSDC row is labelled 'Intuitive Machines 2'.",
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "ch3",
+   "name": "Chandrayaan-3 Vikram",
+   "set": "landers",
+   "lat": -69.3741,
+   "lon": 32.32,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "ISRO Chandrayaan-3",
+   "landing_date": "2023-08-23",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "bg1",
+   "name": "Blue Ghost 1",
+   "set": "landers",
+   "lat": 18.562,
+   "lon": 61.81,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "Firefly Blue Ghost Mission 1 (CLPS)",
+   "landing_date": "2025-03-02",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "slim",
+   "name": "SLIM",
+   "set": "landers",
+   "lat": -13.316,
+   "lon": 25.251,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "JAXA SLIM",
+   "landing_date": "2024-01-19",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "ce4",
+   "name": "Chang'e 4",
+   "set": "landers",
+   "lat": -45.4561,
+   "lon": 177.5885,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "CNSA Chang'e 4 (far side)",
+   "landing_date": "2019-01-03",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "ce6",
+   "name": "Chang'e 6",
+   "set": "landers",
+   "lat": -41.6385,
+   "lon": -153.9852,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "CNSA Chang'e 6 (far side, Apollo basin)",
+   "landing_date": "2024-06-01",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "a11",
+   "name": "Apollo 11",
+   "set": "apollo",
+   "lat": 0.67416,
+   "lon": 23.47314,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "Apollo 11 LM Eagle (descent stage)",
+   "landing_date": "1969-07-20",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "a15",
+   "name": "Apollo 15",
+   "set": "apollo",
+   "lat": 26.13239,
+   "lon": 3.6333,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "Apollo 15 LM Falcon (descent stage)",
+   "landing_date": "1971-07-30",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  },
+  {
+   "id": "a17",
+   "name": "Apollo 17",
+   "set": "apollo",
+   "lat": 20.1911,
+   "lon": 30.7723,
+   "coord_status": "verified",
+   "coord_kind": "lander position",
+   "mission": "Apollo 17 LM Challenger (descent stage)",
+   "landing_date": "1972-12-11",
+   "source": {
+    "name": "NASA NSSDC - Table of Anthropogenic Impacts and Spacecraft on the Moon (page updated 2025-08-13)",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "checked": "2026-11-14"
+   },
+   "landing_date_note": "UTC date of landing; not cross-checked in this table"
+  }
+ ]
+}
